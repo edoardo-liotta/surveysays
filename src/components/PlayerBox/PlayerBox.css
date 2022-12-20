@@ -1,84 +1,20 @@
 .PlayerBox {
+    align-content: center;
     color: whitesmoke;
     border: solid 4px whitesmoke;
     border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
     min-width: 35vmin;
     transition: ease-in-out 300ms;
 }
 
+.PlayerBox .info {
+    width: 100%
+}
+
 .PlayerBox.is-active {
     box-shadow: 0 0 20px white;
     color: white;
-}
-
-.ListItem-header.host-view {
-    min-height: 50px;
-}
-
-.ListItem-number {
-    align-items: center;
-    background-color: navy;
-    border-radius: 100px;
-    display: flex;
-    justify-content: center;
-    min-height: inherit;
-}
-
-.ListItem-answer {
-    align-items: center;
-    background-color: royalblue;
-    border-radius: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    min-height: inherit;
-}
-
-.ListItem-answer.host-view {
-    font-size: smaller;
-    min-height: 50px;
-}
-
-.ListItem-answer.host-view:not(.is-revealed) {
-    background-color: darkgray;
-}
-
-.ListItem-answer.host-view:not(.is-revealed) .ListItem-answer-number {
-    background-color: gray;
-}
-
-.ListItem-answer.host-view:not(.is-revealed) .ListItem-points {
-    background-color: gray;
-}
-
-.ListItem-answer-number {
-    align-items: center;
-    background-color: navy;
-    border-radius: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 6vmax;
-    min-height: inherit;
-}
-
-.ListItem-text {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    min-height: inherit;
-    text-align: start;
-}
-
-.ListItem-points {
-    align-items: center;
-    background-color: brown;
-    border-radius: 100px;
-    display: flex;
-    justify-content: center;
-    min-height: inherit;
-    min-width: 8vmax;
 }

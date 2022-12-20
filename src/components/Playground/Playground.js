@@ -15,7 +15,8 @@ function addRefs(answers) {
 }
 
 const ScoreAdditionMode = {
-  ADD: "add"
+  ADD: "add",
+  SET: "set"
 }
 
 class Playground extends Component {
@@ -90,19 +91,35 @@ class Playground extends Component {
   onItemReveal = (itemId, newState) => {
     const item = this.state.answerItems.find(x => itemId === x.id)
     if (newState === true && item && item.points) {
-      this.updateScore(item.points)
+      const activePlayer = this.state.players.find(x => x.active === true)
+      if (activePlayer) {
+        this.updateScore(activePlayer.name, item.points, this.state.scoreAdditionMode)
+      }
     }
   }
 
-  updateScore = (pointsToAdd) => {
+  onManualEditScore = (targetPlayerName, newScore) => {
+    this.updateScore(targetPlayerName, newScore, ScoreAdditionMode.SET)
+    if (this.props.hostView) {
+      this.serviceApi.forceRefresh(this.props.roundId)
+    }
+  }
+
+  updateScore = (targetPlayerName, pointsToAdd, scoreAdditionMode) => {
     const newPlayers = [...this.state.players]
-    const activePlayer = newPlayers.find(x => x.active === true);
-    if (activePlayer) {
-      if (ScoreAdditionMode.ADD === this.state.scoreAdditionMode) {
-        const current = activePlayer.ref.current;
+    const targetPlayer = newPlayers.find(x => x.name === targetPlayerName)
+    if (targetPlayer) {
+      if (ScoreAdditionMode.ADD === scoreAdditionMode) {
+        const current = targetPlayer.ref.current;
         const score = current.state.score + pointsToAdd
         current.setScore(score)
-        activePlayer.score = score
+        targetPlayer.score = score
+      }
+      if (ScoreAdditionMode.SET === scoreAdditionMode) {
+        const current = targetPlayer.ref.current;
+        const score = pointsToAdd
+        current.setScore(score)
+        targetPlayer.score = score
       }
     }
 
@@ -130,8 +147,8 @@ class Playground extends Component {
           <ListGrid hostView={hostView} roundId={roundId}
                     items={this.answerItems()} onToggleReveal={this.onItemReveal} />
           <div className="spacer" />
-          <PlayerGrid
-              players={players} setActivePlayer={this.triggerSetActivePlayer} />
+          <PlayerGrid hostView={hostView} onManualEditScore={this.onManualEditScore}
+                      players={players} setActivePlayer={this.triggerSetActivePlayer} />
         </div>
     );
   }

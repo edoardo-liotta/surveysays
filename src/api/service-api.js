@@ -44,6 +44,14 @@ class ServiceApi {
   createSocketConnection = () => {
     return new WebSocket(`ws://${this.host}/connect`);
   }
+
+  forceRefresh = (roundId, thenCallback, catchCallback) => {
+    fetch(`${this.schema}://${this.host}/round/${roundId}/force-refresh`, {
+      method: 'POST'
+    })
+        .then(thenCallback)
+        .catch(catchCallback)
+  }
 }
 
 export default ServiceApi;
