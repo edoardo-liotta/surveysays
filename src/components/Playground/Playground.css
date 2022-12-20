@@ -10,3 +10,17 @@
     display: flex;
     justify-content: center;
 }
+
+.Playground .strike-container {
+    left: 50%;
+    margin-top: -20vh;
+    margin-left: -22vw;
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    display: none;
+}
+
+.Playground .strike-container.active {
+    display: block;
+}

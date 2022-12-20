@@ -8,7 +8,7 @@ function HostActions(props) {
   return <div className={"HostActions"}>
     <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
       <Toolbar>
-        <IconButton color="inherit">
+        <IconButton color="inherit" onClick={props.onTriggerStrike}>
           <Cancel htmlColor={"darkred"} />
         </IconButton>
         <Box sx={{ flexGrow: 1 }} />

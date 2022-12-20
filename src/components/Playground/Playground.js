@@ -6,6 +6,7 @@ import ListGrid from '../ListGrid/ListGrid';
 import { Component, createRef, Fragment } from 'react';
 import ServiceApi from '../../api/service-api';
 import HostActions from './HostActions';
+import { Cancel } from '@mui/icons-material';
 
 function addRefs(answers) {
   const newAnswers = [...answers]
@@ -28,7 +29,8 @@ class Playground extends Component {
       answerItems: addRefs((props.roundInfo && props.roundInfo.items) || []),
       questionItem: (props.roundInfo && props.roundInfo.questionItem) || {},
       players: addRefs((props.roundInfo && props.roundInfo.players) || []),
-      scoreAdditionMode: ScoreAdditionMode.ADD
+      scoreAdditionMode: ScoreAdditionMode.ADD,
+      isShowingStrike: false
     }
   }
 
@@ -120,6 +122,13 @@ class Playground extends Component {
     })
   }
 
+  triggerStrike = () => {
+    this.setState({ isShowingStrike: true })
+    setTimeout(() => {
+      this.setState({ isShowingStrike: false });
+    }, 3000);
+  }
+
   triggerToggleQuestionItemRevealed = () => {
     this.toggleQuestionItemRevealed(!this.state.questionItem.isRevealed)
   }
@@ -171,7 +180,7 @@ class Playground extends Component {
 
   render() {
     const { hostView, roundId } = this.props
-    const { players, questionItem, scoreAdditionMode } = this.state
+    const { isShowingStrike, players, questionItem, scoreAdditionMode } = this.state
 
     return (
         <div className="Playground">
@@ -189,8 +198,12 @@ class Playground extends Component {
             <div className="spacer" />
             <PlayerGrid hostView={hostView} onManualEditScore={this.onManualEditScore}
                         players={players} setActivePlayer={this.triggerSetActivePlayer} />
+            <div className={"strike-container " + (isShowingStrike ? "active" : "")}>
+              <Cancel htmlColor={"red"} sx={{ fontSize: 400 }} />
+            </div>
             {hostView &&
-                <HostActions scoreAdditionMode={scoreAdditionMode} onToggle={this.toggleScoreAdditionMode} />
+                <HostActions scoreAdditionMode={scoreAdditionMode} onTriggerStrike={this.triggerStrike}
+                             onToggle={this.toggleScoreAdditionMode} />
             }
           </Fragment>
         </div>
