@@ -1,5 +1,5 @@
 .ListItem {
-  padding-bottom: 0.2vh;
+  padding-bottom: 0.5vmin;
 }
 
 .App-logo {
@@ -14,25 +14,59 @@
 }
 
 .ListItem-header {
-  background-color: darkgoldenrod;
-  min-width: 80vw;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  color: white;
+  background-color: darkgoldenrod;
   border: solid 4px goldenrod;
   border-radius: 100px;
+  color: white;
+  display: flex;
+  font-size: 1.75em;
+  font-weight: bold;
+  min-height: calc(50px + 2vmin);
+  justify-content: center;
+  text-decoration-color: #282c34;
+  text-transform: uppercase;
+  width: 80vw;
 }
 
 .ListItem-number {
-  height: calc(50px + 2vmin);
-  display: flex;
   align-items: center;
+  background-color: royalblue;
+  border: 3px solid navy;
+  border-radius: 100px;
+  display: flex;
   justify-content: center;
-  font-size: calc(25px + 2vmin);
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #282c34;
-  color: white;
+}
+
+.ListItem-answer {
+  align-items: center;
+  background-color: royalblue;
+  border-radius: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ListItem-text {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.spacer {
+  width: 2vmax;
+}
+
+.ListItem-points {
+  align-items: center;
+  background-color: brown;
+  border-radius: 100px;
+  display: flex;
+  height: calc(50px + 2vmax);
+  justify-content: center;
+  min-width: 10vmax;
 }
 
 .App-link {
