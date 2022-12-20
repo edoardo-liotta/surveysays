@@ -1,5 +1,6 @@
 import './Playground.css';
 import '../common.css';
+import PlayerGrid from '../PlayerGrid/PlayerGrid';
 import QuestionBox from '../QuestionBox/QuestionBox';
 import ListGrid from '../ListGrid/ListGrid';
 import { useEffect, useState } from 'react';
@@ -19,6 +20,10 @@ function Playground(props) {
     }] : (roundInfo && roundInfo.items) || [])
   }, [stateChange])
 
+  const triggerUpdate = () => {
+
+  }
+
   return (
       <div className="Playground">
         <header className="Playground-header">
@@ -29,6 +34,9 @@ function Playground(props) {
                      item={roundInfo.questionItem} onToggle={triggerStateChange} />
         <div className="spacer" />
         <ListGrid key={JSON.stringify(answerItems)} hostView={hostView} roundId={roundId} items={answerItems} />
+        <div className="spacer" />
+        <PlayerGrid
+            players={[{ name: "Player 1", active: true, score: 0 }, { name: "Player 2", active: false, score: 0 }]} />
       </div>
   );
 }

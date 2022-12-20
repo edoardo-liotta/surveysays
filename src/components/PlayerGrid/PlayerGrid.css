@@ -1,0 +1,9 @@
+.PlayerGrid {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.PlayerBox:not(:last-of-type) {
+    margin-right: 5vmin;
+}

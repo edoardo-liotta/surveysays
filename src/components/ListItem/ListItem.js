@@ -16,7 +16,8 @@ function ListItem(props) {
     let initialState = discovered;
     let newDiscovered = !initialState;
     setDiscovered(newDiscovered)
-    serviceApi.updateRound(roundId, id, newDiscovered, (_) => setDiscovered(initialState))
+    serviceApi.updateRound(roundId, id, newDiscovered, (_) => {
+    }, (_) => setDiscovered(initialState))
   }
 
   return (

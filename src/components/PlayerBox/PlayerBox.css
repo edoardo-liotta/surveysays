@@ -1,34 +1,15 @@
-.ListItem {
-    margin-bottom: 0.8vmin;
-    margin-left: 1.5vmin;
+.PlayerBox {
+    color: whitesmoke;
+    border: solid 4px whitesmoke;
+    border-radius: 10px;
+    padding: 10px;
+    min-width: 35vmin;
     transition: ease-in-out 300ms;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.ListItem-header {
-    align-items: center;
-    background-color: darkgoldenrod;
-    border: solid 4px goldenrod;
-    border-radius: 100px;
+.PlayerBox.is-active {
+    box-shadow: 0 0 20px white;
     color: white;
-    display: flex;
-    font-size: 1.75em;
-    font-weight: bold;
-    min-height: calc(50px + 2vmax);
-    justify-content: center;
-    text-decoration-color: #282c34;
-    text-transform: uppercase;
-    width: 90vmin;
 }
 
 .ListItem-header.host-view {

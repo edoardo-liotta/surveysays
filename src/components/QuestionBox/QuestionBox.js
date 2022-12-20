@@ -17,7 +17,8 @@ function QuestionBox(props) {
     let newDiscovered = !initialState;
     setDiscovered(newDiscovered);
     onToggle(newDiscovered);
-    serviceApi.updateRound(roundId, item.id, newDiscovered, (_) => setDiscovered(initialState));
+    serviceApi.updateRound(roundId, item.id, newDiscovered, (_) => {
+    }, (_) => setDiscovered(initialState));
   }
 
   return (
