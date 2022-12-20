@@ -11,7 +11,7 @@
   border-radius: 100px;
   color: white;
   display: flex;
-  font-size: 1em;
+  font-size: 1.75em;
   font-weight: bold;
   min-height: calc(15px + 2vmax);
   justify-content: center;
@@ -29,16 +29,12 @@
   display:flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75em;
-  font-weight: bold;
   min-height: calc(150px + 2vmax);
 }
 
 @media (orientation: landscape) {
   .QuestionBox-header {
     min-height: calc(50px + 2vmax);
-    font-size: 1.75em;
-    font-weight: bold;
-    width: 180vmin;
+    width: 95vmax;
   }
 }

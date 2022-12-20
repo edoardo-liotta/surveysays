@@ -5,6 +5,7 @@ import ServiceApi from '../../api/service-api';
 
 const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
+const serviceApi = new ServiceApi()
 
 function ListItem(props) {
   const { roundId, id, hostView, isDiscovered, coverText, text, points } = props
@@ -15,7 +16,7 @@ function ListItem(props) {
     let initialState = discovered;
     let newDiscovered = !initialState;
     setDiscovered(newDiscovered)
-    new ServiceApi().updateRound(roundId, id, newDiscovered, (_) => setDiscovered(initialState))
+    serviceApi.updateRound(roundId, id, newDiscovered, (_) => setDiscovered(initialState))
   }
 
   return (

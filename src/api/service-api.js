@@ -10,6 +10,9 @@ class ServiceApi {
         .catch(catchCallback)
   }
 
+  getRound = (roundId) => {
+    return fetch(`http://localhost:8080/round/${roundId}`).then(r => r.json())
+  }
 }
 
 export default ServiceApi;
