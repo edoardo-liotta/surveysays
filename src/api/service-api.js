@@ -1,7 +1,9 @@
 class ServiceApi {
 
+  host = `${window.location.hostname}:8080`
+
   updateRound = (roundId, itemId, newDiscovered, catchCallback) => {
-    fetch(`http://localhost:8080/round/${roundId}/update`, {
+    fetch(`http://${this.host}/round/${roundId}/update`, {
       method: 'POST',
       body: JSON.stringify({ id: itemId, isDiscovered: newDiscovered }),
       headers: { 'Content-Type': 'application/json' }
@@ -11,7 +13,11 @@ class ServiceApi {
   }
 
   getRound = (roundId) => {
-    return fetch(`http://localhost:8080/round/${roundId}`).then(r => r.json())
+    return fetch(`http://${this.host}/round/${roundId}`).then(r => r.json())
+  }
+
+  createSocketConnection = () => {
+    return new WebSocket(`ws://${this.host}/connect`);
   }
 }
 

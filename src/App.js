@@ -46,7 +46,7 @@ function AppView(hostView, roundId) {
       setFetching(true)
     }
     if (!hostView) {
-      setSocketConnection(new WebSocket("ws://localhost:8080/connect"))
+      setSocketConnection(serviceApi.createSocketConnection())
     }
   }, [])
 
