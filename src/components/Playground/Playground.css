@@ -1,0 +1,12 @@
+.Playground {
+    align-items: center;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+}
+
+.Playground-header {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
