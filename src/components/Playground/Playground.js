@@ -100,13 +100,21 @@ class Playground extends Component {
   }
 
   updateScore = (pointsToAdd) => {
-    const activePlayer = this.state.players.find(x => x.active === true);
+    const newPlayers = [...this.state.players]
+    const activePlayer = newPlayers.find(x => x.active === true);
     if (activePlayer) {
       if (ScoreAdditionMode.ADD === this.state.scoreAdditionMode) {
         const current = activePlayer.ref.current;
         const score = current.state.score + pointsToAdd
         current.setScore(score)
+        activePlayer.score = score
       }
+    }
+
+    this.setState({ players: newPlayers })
+
+    if (this.props.hostView === true) {
+      this.serviceApi.updateScores(this.props.roundId, newPlayers)
     }
   }
 

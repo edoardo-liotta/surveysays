@@ -29,6 +29,18 @@ class ServiceApi {
         .catch(catchCallback)
   }
 
+  updateScores = (roundId, players, thenCallback, catchCallback) => {
+    fetch(`${this.schema}://${this.host}/round/${roundId}/set-scores`, {
+      method: 'POST',
+      body: JSON.stringify(players.map(x => {
+        return { name: x.name, score: x.score }
+      })),
+      headers: { 'Content-Type': 'application/json' }
+    })
+        .then(thenCallback)
+        .catch(catchCallback)
+  }
+
   createSocketConnection = () => {
     return new WebSocket(`ws://${this.host}/connect`);
   }

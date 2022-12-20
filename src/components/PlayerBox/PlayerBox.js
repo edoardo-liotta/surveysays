@@ -16,13 +16,13 @@ class PlayerBox extends Component {
     }
   }
 
-  setActive(newActive) {
+  setActive = (newActive) => {
     this.setState({
       isActive: newActive
     })
   }
 
-  setScore(newScore) {
+  setScore = (newScore) => {
     this.setState({ targetScore: newScore })
   }
 
