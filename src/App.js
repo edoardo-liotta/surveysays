@@ -3,35 +3,49 @@ import Playground from './components/Playground/Playground';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import ServiceApi from './api/service-api';
+import Configuration from './components/Configuration/Configuration';
+import { getRoundId } from './api/config-api';
 
 const serviceApi = new ServiceApi()
 
 function App() {
+
+  const [roundId, setRoundId] = useState(getRoundId())
+
+  const onSaveConfig = (newConfig) => {
+    if (newConfig) {
+      setRoundId(newConfig.roundId)
+    }
+  }
+
   return (
       <Router basename={"surveysays"}>
         <Routes>
-          <Route path="/host" element={<Host />} />
-          <Route path="/present" element={<Present key={"appview-present"} />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/host" element={<Host roundId={roundId} />} />
+          <Route path="/present" element={<Present key={"appview-present"} roundId={roundId} />} />
+          <Route path="/" element={<Home onSave={onSaveConfig} />} />
         </Routes>
       </Router>
   )
 }
 
-function Home() {
-  return <nav>
-    <ul>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/host">Host</Link>
-      </li>
-      <li>
-        <Link to="/present">Present</Link>
-      </li>
-    </ul>
-  </nav>;
+function Home(props) {
+  return <>
+    <nav>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/host">Host</Link>
+        </li>
+        <li>
+          <Link to="/present">Present</Link>
+        </li>
+      </ul>
+    </nav>
+    <Configuration onSave={props.onSave} />
+  </>;
 }
 
 function AppView(hostView, roundId) {
@@ -103,12 +117,12 @@ function AppView(hostView, roundId) {
   )
 }
 
-function Host() {
-  return AppView(true, 1)
+function Host(props) {
+  return AppView(true, props.roundId)
 }
 
-function Present() {
-  return AppView(false, 1);
+function Present(props) {
+  return AppView(false, props.roundId);
 }
 
 export default App;
