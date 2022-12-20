@@ -1,6 +1,7 @@
 const defaultConfiguration = () => {
   return {
-    roundId: 1
+    roundId: 1,
+    serviceUrl: "http://localhost:8080"
   }
 }
 
@@ -22,8 +23,18 @@ const setConfiguration = (newConfiguration) => {
   }
 }
 
+const resetConfiguration = () => {
+  if (window && window.localStorage) {
+    window.localStorage.removeItem("configuration")
+  }
+}
+
 const getRoundId = () => {
   return getConfiguration().roundId
 }
 
-export { defaultConfiguration, getRoundId, setConfiguration }
+const getServiceUrl = () => {
+  return getConfiguration().serviceUrl
+}
+
+export { getConfiguration, getRoundId, getServiceUrl, resetConfiguration, setConfiguration }

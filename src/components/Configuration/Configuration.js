@@ -1,39 +1,61 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useState } from 'react';
-import { defaultConfiguration, getRoundId, setConfiguration } from '../../api/config-api';
+import {
+  getConfiguration,
+  getRoundId,
+  getServiceUrl,
+  resetConfiguration,
+  setConfiguration
+} from '../../api/config-api';
 
 const Configuration = (props) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const triggerEditDialogOpen = () => setEditDialogOpen(true)
   const triggerEditDialogClose = () => setEditDialogOpen(false)
   const updateConfig = () => {
-    const defaultConfig = defaultConfiguration()
+    const defaultConfig = getConfiguration()
+    const newConfig = { ...defaultConfig }
     const roundIdField = document.getElementById("config-roundId")
     if (roundIdField) {
-      const newRoundId = parseInt(roundIdField.value)
-      const newConfig = { ...defaultConfig, roundId: newRoundId }
-      setConfiguration(newConfig)
-      if (props.onSave) {
-        props.onSave(newConfig)
-      }
+      newConfig.roundId = parseInt(roundIdField.value)
+    }
+    const serviceUrlField = document.getElementById("config-serviceUrl")
+    if (serviceUrlField) {
+      newConfig.serviceUrl = serviceUrlField.value
+    }
+    setConfiguration(newConfig)
+    if (props.onSave) {
+      props.onSave(newConfig)
     }
     triggerEditDialogClose()
   }
 
+  const resetConfig = () => {
+    resetConfiguration()
+  }
+
   return <>
-    <Button onClick={triggerEditDialogOpen}>Configure</Button>
+    <Button onClick={triggerEditDialogOpen} variant="outlined">Configure</Button>
+    <Button onClick={resetConfig} variant="outlined">Reset configuration</Button>
     <Dialog open={editDialogOpen} onClose={triggerEditDialogClose}>
       <DialogTitle>Configurazione</DialogTitle>
       <DialogContent>
         <TextField
             autoFocus
-            margin="dense"
             id="config-roundId"
             label="Round ID"
             type="number"
             fullWidth
             variant="standard"
             defaultValue={getRoundId()}
+        />
+        <TextField
+            id="config-serviceUrl"
+            label="Service URL"
+            type="url"
+            fullWidth
+            variant="standard"
+            defaultValue={getServiceUrl()}
         />
       </DialogContent>
       <DialogActions>
