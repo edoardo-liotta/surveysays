@@ -4,17 +4,18 @@ import '../common.css';
 import ListItem from '../ListItem/ListItem';
 
 function ListGrid(props) {
-  const { hostView } = props
+  const { hostView, items } = props
+
+  function listItem(hostView, item) {
+    return <ListItem id={item.id} hostView={hostView} isDiscovered={item.isDiscovered} coverText={item.coverText}
+                     text={item.text} points={item.points} />
+  }
+
   return (
       <div className="ListGrid">
-        <ListItem hostView={hostView} isDiscovered={false} coverText={1} text={"La risata"} points={10} />
-        <ListItem hostView={hostView} isDiscovered={true} coverText={2} text={"I capelli"} points={10} />
-        <ListItem hostView={hostView} isDiscovered={true} coverText={3} text={"I dentini davanti"} points={10} />
-        <ListItem hostView={hostView} isDiscovered={false} coverText={4} text={"Tutto quanto"} points={10} />
-        <ListItem hostView={hostView} isDiscovered={true} coverText={5} />
-        <ListItem hostView={hostView} isDiscovered={true} coverText={6} />
-        <ListItem hostView={hostView} isDiscovered={true} coverText={7} />
-        <ListItem />
+        {items && items.map(function (item, i) {
+          return listItem(hostView, item)
+        })}
       </div>
   );
 }

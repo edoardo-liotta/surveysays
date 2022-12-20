@@ -5,27 +5,27 @@ const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
 
 function QuestionBox(props) {
-  const { hostView, isDiscovered, coverText, text } = props
+  const { hostView, item } = props
 
   return (
       <div className="QuestionBox">
         <header className="QuestionBox-header">
-          {coverText && !hostView && !isDiscovered &&
+          {item && item.coverText && !hostView && !item.isDiscovered &&
               <div className="QuestionBox-cover">
                 <div className="spacer" />
                 <div className="spacer" />
-                <div>{coverText}</div>
+                <div>{item.coverText}</div>
                 <div className="spacer" />
                 <div className="spacer" />
               </div>
           }
-          {text &&
+          {item && item.text &&
               <div
-                  className={"QuestionBox-question " + (hostView ? hostViewClass : "") + " " + (isDiscovered ? isDiscoveredClass : "")}>
+                  className={"QuestionBox-question " + (hostView ? hostViewClass : "") + " " + (item.isDiscovered ? isDiscoveredClass : "")}>
                 <div className="QuestionBox-text">
-                  {(isDiscovered || hostView) && <>
+                  {(item.isDiscovered || hostView) && <>
                     <div className="spacer" />
-                    {text}
+                    {item.text}
                     <div className="spacer" />
                   </>}
                 </div>
