@@ -28,7 +28,8 @@
 }
 
 .ListItem-header.host-view {
-    min-height: 50px;
+    min-height: 40px;
+    font-size: x-large;
 }
 
 .ListItem-header.host-view > div {
@@ -57,7 +58,7 @@
 
 .ListItem-answer.host-view {
     font-size: smaller;
-    min-height: 50px;
+    min-height: inherit;
 }
 
 .ListItem-answer.host-view:not(.is-revealed) {
@@ -112,17 +113,4 @@
     justify-content: center;
     min-height: inherit;
     min-width: 8vmax;
-}
-
-.App-link {
-    color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
 }

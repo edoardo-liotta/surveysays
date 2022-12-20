@@ -13,7 +13,7 @@ function PlayerGrid(props) {
   }
 
   return (
-      <div className="PlayerGrid">
+      <div className={"PlayerGrid " + (hostView ? "host-view" : "")}>
         {players && players.map(function (item) {
           return playerBox(item)
         })}

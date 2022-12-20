@@ -3,8 +3,10 @@ import '../common.css';
 import PlayerGrid from '../PlayerGrid/PlayerGrid';
 import QuestionBox from '../QuestionBox/QuestionBox';
 import ListGrid from '../ListGrid/ListGrid';
-import { Component, createRef } from 'react';
+import { Component, createRef, Fragment } from 'react';
 import ServiceApi from '../../api/service-api';
+import { CssBaseline } from '@mui/material';
+import HostActions from './HostActions';
 
 function addRefs(answers) {
   const newAnswers = [...answers]
@@ -16,7 +18,8 @@ function addRefs(answers) {
 
 const ScoreAdditionMode = {
   ADD: "add",
-  SET: "set"
+  SET: "set",
+  STEAL: "steal"
 }
 
 class Playground extends Component {
@@ -105,6 +108,13 @@ class Playground extends Component {
     }
   }
 
+  triggerSteal = () => {
+    const activePlayer = this.state.players.find(x => x.active === true)
+    if (activePlayer) {
+      this.updateScore(activePlayer.name, 0, ScoreAdditionMode.STEAL)
+    }
+  }
+
   updateScore = (targetPlayerName, pointsToAdd, scoreAdditionMode) => {
     const newPlayers = [...this.state.players]
     const targetPlayer = newPlayers.find(x => x.name === targetPlayerName)
@@ -119,6 +129,20 @@ class Playground extends Component {
         const current = targetPlayer.ref.current;
         const score = pointsToAdd
         current.setScore(score)
+        targetPlayer.score = score
+      }
+      if (ScoreAdditionMode.STEAL === scoreAdditionMode) {
+        let scoreToSteal = 0
+        newPlayers.forEach(x => {
+          if (x => x.name !== targetPlayerName) {
+            scoreToSteal += x.score
+            x.ref.current.setScore(0)
+            x.score = 0
+          }
+        })
+
+        const score = targetPlayer.score + pointsToAdd + scoreToSteal
+        targetPlayer.ref.current.setScore(score)
         targetPlayer.score = score
       }
     }
@@ -136,19 +160,25 @@ class Playground extends Component {
 
     return (
         <div className="Playground">
-          <header className="Playground-header">
+          <Fragment>
+            <CssBaseline />
+            <header className="Playground-header">
 
-          </header>
-          <div className="spacer" />
-          <QuestionBox key={`question-${questionItem.id}-${questionItem.isRevealed}`} hostView={hostView}
-                       roundId={roundId}
-                       item={questionItem} onToggle={this.triggerToggleQuestionItemRevealed} />
-          <div className="spacer" />
-          <ListGrid hostView={hostView} roundId={roundId}
-                    items={this.answerItems()} onToggleReveal={this.onItemReveal} />
-          <div className="spacer" />
-          <PlayerGrid hostView={hostView} onManualEditScore={this.onManualEditScore}
-                      players={players} setActivePlayer={this.triggerSetActivePlayer} />
+            </header>
+            <div className="spacer" />
+            <QuestionBox key={`question-${questionItem.id}-${questionItem.isRevealed}`} hostView={hostView}
+                         roundId={roundId}
+                         item={questionItem} onToggle={this.triggerToggleQuestionItemRevealed} />
+            <div className="spacer" />
+            <ListGrid hostView={hostView} roundId={roundId}
+                      items={this.answerItems()} onToggleReveal={this.onItemReveal} />
+            <div className="spacer" />
+            <PlayerGrid hostView={hostView} onManualEditScore={this.onManualEditScore}
+                        players={players} setActivePlayer={this.triggerSetActivePlayer} />
+            {hostView &&
+                <HostActions triggerSteal={this.triggerSteal} />
+            }
+          </Fragment>
         </div>
     );
   }
