@@ -50,10 +50,6 @@
     min-height: inherit;
 }
 
-.ListItem-answer:not(.host-view):not(.is-discovered) {
-    display: none;
-}
-
 .ListItem-answer.host-view:not(.is-discovered) {
     background-color: darkgray;
 }
