@@ -1,5 +1,5 @@
-.App {
-  text-align: center;
+.ListItem {
+  padding-bottom: 0.2vh;
 }
 
 .App-logo {
@@ -13,14 +13,25 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.ListItem-header {
+  background-color: darkgoldenrod;
+  min-width: 80vw;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  color: white;
+  border: solid 4px goldenrod;
+  border-radius: 100px;
+}
+
+.ListItem-number {
+  height: calc(50px + 2vmin);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(25px + 2vmin);
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #282c34;
   color: white;
 }
 

@@ -1,22 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
+import ListItem from './components/ListItem';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <ListItem itemNumber={"1"} />
+        <ListItem itemNumber={"2"} />
+        <ListItem itemNumber={"3"} />
+        <ListItem itemNumber={"4"} />
+        <ListItem itemNumber={"5"} />
+        <ListItem itemNumber={"6"} />
+        <ListItem itemNumber={"7"} />
+        <ListItem itemNumber={"8"} />
       </header>
     </div>
   );
