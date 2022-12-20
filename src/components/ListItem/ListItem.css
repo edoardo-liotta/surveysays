@@ -1,18 +1,11 @@
 .ListItem {
     margin-bottom: 0.8vmin;
     margin-left: 1.5vmin;
-    transition: ease-in-out 300ms;
+    transition: all 300ms;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+.ListItem * {
+    transition: all 300ms;
 }
 
 .ListItem-header {
@@ -51,8 +44,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 100%;
     min-height: inherit;
+    width: 100%;
 }
 
 .ListItem-answer.host-view {
@@ -64,23 +57,12 @@
     background-color: darkgray;
 }
 
-.ListItem-answer.host-view:not(.is-discovered) .ListItem-answer-number {
+.ListItem-answer.host-view:not(.is-discovered) .ListItem-number {
     background-color: gray;
 }
 
 .ListItem-answer.host-view:not(.is-discovered) .ListItem-points {
     background-color: gray;
-}
-
-.ListItem-answer-number {
-    align-items: center;
-    background-color: navy;
-    border-radius: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 6vmax;
-    min-height: inherit;
 }
 
 .ListItem-text {

@@ -16,8 +16,10 @@ function ListItem(props) {
     let initialState = discovered;
     let newDiscovered = !initialState;
     setDiscovered(newDiscovered)
-    serviceApi.updateRound(roundId, id, newDiscovered, (_) => {
-    }, (_) => setDiscovered(initialState))
+    if ("compressed-answers" !== id) {
+      serviceApi.updateRound(roundId, id, newDiscovered, (_) => {
+      }, (_) => setDiscovered(initialState))
+    }
   }
 
   return (
@@ -38,7 +40,7 @@ function ListItem(props) {
                   className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (discovered ? isDiscoveredClass : "")}>
                 <div className="ListItem-text">
                   {coverText &&
-                      <div className="ListItem-answer-number">
+                      <div className="ListItem-number">
                         <div className="spacer" />
                         <div>{coverText}</div>
                         <div className="spacer" />

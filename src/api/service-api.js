@@ -1,8 +1,9 @@
 class ServiceApi {
 
-  //host = `${window.location.hostname}:8080`
-  host = "d283-165-225-202-155.eu.ngrok.io"
-  schema = "https"
+  host = `${window.location.hostname}:8080`
+  schema = "http"
+  //host = "d283-165-225-202-155.eu.ngrok.io"
+  //schema = "https"
 
   updateRound = (roundId, itemId, newDiscovered, thenCallback, catchCallback) => {
     fetch(`${this.schema}://${this.host}/round/${roundId}/update`, {
