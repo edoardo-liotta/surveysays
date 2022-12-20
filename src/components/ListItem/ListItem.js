@@ -5,16 +5,16 @@ const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
 
 function ListItem(props) {
-  const { hostView, isDiscovered, itemNumber, text, points } = props
+  const { hostView, isDiscovered, coverText, text, points } = props
 
   return (
       <div className="ListItem">
         <header className="ListItem-header">
-          {itemNumber && !hostView && !isDiscovered &&
+          {coverText && !hostView && !isDiscovered &&
               <div className="ListItem-number">
                 <div className="spacer" />
                 <div className="spacer" />
-                <div>{itemNumber}</div>
+                <div>{coverText}</div>
                 <div className="spacer" />
                 <div className="spacer" />
               </div>
@@ -23,10 +23,10 @@ function ListItem(props) {
               <div
                   className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (isDiscovered ? isDiscoveredClass : "")}>
                 <div className="ListItem-text">
-                  {itemNumber &&
+                  {coverText &&
                       <div className="ListItem-answer-number">
                         <div className="spacer" />
-                        <div>{itemNumber}</div>
+                        <div>{coverText}</div>
                         <div className="spacer" />
                       </div>
                   }
