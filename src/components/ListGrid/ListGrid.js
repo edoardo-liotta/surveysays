@@ -1,18 +1,17 @@
 import './ListGrid.css';
 import ListItem from '../ListItem/ListItem';
 
-function ListGrid(props) {
- const {itemNumber, text, points} = props
+function ListGrid() {
   return (
     <div className="ListGrid">
-      <ListItem itemNumber={1} />
-      <ListItem text={"I capelli"} points={10} />
-      <ListItem text={"I dentini davanti"} points={10} />
-      <ListItem text={"Tutto quanto"} />
-      <ListItem itemNumber={"ANTONIETTA"} />
-      <ListItem itemNumber={6} />
-      <ListItem itemNumber={7} />
-      <ListItem itemNumber={8} />
+      <ListItem hostView={false} isDiscovered={false} itemNumber={1} text={"La risata"} points={10} />
+      <ListItem hostView={false} isDiscovered={true} itemNumber={2} text={"I capelli"} points={10} />
+      <ListItem hostView={true} isDiscovered={true} itemNumber={3} text={"I dentini davanti"} points={10} />
+      <ListItem hostView={true} isDiscovered={false} itemNumber={4} text={"Tutto quanto"} points={10} />
+      <ListItem hostView={false} isDiscovered={true} itemNumber={5} />
+      <ListItem hostView={false} isDiscovered={true} itemNumber={6} />
+      <ListItem hostView={false} isDiscovered={true} itemNumber={7} />
+      <ListItem />
     </div>
   );
 }

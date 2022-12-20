@@ -1,7 +1,14 @@
 .ListGrid {
   align-items: center;
   justify-content: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .ListGrid {
+    grid-auto-flow: column;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+  }
 }
