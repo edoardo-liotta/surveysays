@@ -1,7 +1,7 @@
 {
   "name": "surveysays",
   "version": "0.1.0",
-  "homepage": "https://edoardo-liotta.github.io/surveysays",
+  "homepage": "https://edoardo-liotta.github.io/surveysays/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",

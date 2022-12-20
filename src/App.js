@@ -8,7 +8,7 @@ const serviceApi = new ServiceApi()
 
 function App() {
   return (
-      <Router>
+      <Router basename={"surveysays"}>
         <Routes>
           <Route path="/host" element={<Host />} />
           <Route path="/present" element={<Present key={"appview-present"} />} />
