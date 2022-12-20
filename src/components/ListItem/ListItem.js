@@ -1,5 +1,6 @@
 import './ListItem.css';
 import '../common.css';
+import { useEffect, useState } from 'react';
 
 const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
@@ -7,10 +8,16 @@ const isDiscoveredClass = "is-discovered"
 function ListItem(props) {
   const { id, hostView, isDiscovered, coverText, text, points } = props
 
+  const [discovered, setDiscovered] = useState(isDiscovered)
+
+  function toggleState() {
+    setDiscovered(!discovered)
+  }
+
   return (
-      <div className="ListItem" key={id}>
+      <div className="ListItem" key={id} onClick={toggleState}>
         <header className="ListItem-header">
-          {coverText && !hostView && !isDiscovered &&
+          {coverText && !hostView && !discovered &&
               <div className="ListItem-number">
                 <div className="spacer" />
                 <div className="spacer" />
@@ -19,9 +26,9 @@ function ListItem(props) {
                 <div className="spacer" />
               </div>
           }
-          {text && (hostView || isDiscovered) &&
+          {text && (hostView || discovered) &&
               <div
-                  className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (isDiscovered ? isDiscoveredClass : "")}>
+                  className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (discovered ? isDiscoveredClass : "")}>
                 <div className="ListItem-text">
                   {coverText &&
                       <div className="ListItem-answer-number">

@@ -1,5 +1,6 @@
 import './QuestionBox.css';
 import '../common.css';
+import { useState } from 'react';
 
 const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
@@ -7,10 +8,16 @@ const isDiscoveredClass = "is-discovered"
 function QuestionBox(props) {
   const { hostView, item } = props
 
+  const [discovered, setDiscovered] = useState(item && item.isDiscovered)
+
+  function toggleState() {
+    setDiscovered(!discovered)
+  }
+
   return (
-      <div className="QuestionBox">
+      <div className="QuestionBox" onClick={toggleState}>
         <header className="QuestionBox-header">
-          {item && item.coverText && !hostView && !item.isDiscovered &&
+          {item && item.coverText && !hostView && !discovered &&
               <div className="QuestionBox-cover">
                 <div className="spacer" />
                 <div className="spacer" />
@@ -21,9 +28,9 @@ function QuestionBox(props) {
           }
           {item && item.text &&
               <div
-                  className={"QuestionBox-question " + (hostView ? hostViewClass : "") + " " + (item.isDiscovered ? isDiscoveredClass : "")}>
+                  className={"QuestionBox-question " + (hostView ? hostViewClass : "") + " " + (discovered ? isDiscoveredClass : "")}>
                 <div className="QuestionBox-text">
-                  {(item.isDiscovered || hostView) && <>
+                  {(discovered || hostView) && <>
                     <div className="spacer" />
                     {item.text}
                     <div className="spacer" />

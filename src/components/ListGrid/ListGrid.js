@@ -7,7 +7,8 @@ function ListGrid(props) {
   const { hostView, items } = props
 
   function listItem(hostView, item) {
-    return <ListItem id={item.id} hostView={hostView} isDiscovered={item.isDiscovered} coverText={item.coverText}
+    return <ListItem key={item.id} id={item.id} hostView={hostView} isDiscovered={item.isDiscovered}
+                     coverText={item.coverText}
                      text={item.text} points={item.points} />
   }
 

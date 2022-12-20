@@ -1,14 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import QuestionBox from './QuestionBox';
-import ListItem from '../ListItem/ListItem';
-
-test('renders covered list item', () => {
-  render(<QuestionBox />);
-  expect(true).toBeTruthy();
-});
+import { click } from '@testing-library/user-event/dist/click';
 
 test('renders player view, discovered', async () => {
-  render(<QuestionBox hostView={false} isDiscovered={true} coverText={"coverText"} text={"Question"}/>);
+  const item = { text: "Question", coverText: "coverText", isDiscovered: true }
+  render(<QuestionBox hostView={false} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).not.toBeInTheDocument()
   const text = screen.queryByText(/Question/i);
@@ -16,7 +12,8 @@ test('renders player view, discovered', async () => {
 });
 
 test('renders player view, hidden', async () => {
-  render(<QuestionBox hostView={false} isDiscovered={false} coverText={"coverText"} text={"Question"}/>);
+  const item = { text: "Question", coverText: "coverText", isDiscovered: false }
+  render(<QuestionBox hostView={false} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).toBeInTheDocument()
   const text = screen.queryByText(/Question/i);
@@ -24,7 +21,8 @@ test('renders player view, hidden', async () => {
 });
 
 test('renders host view, discovered', async () => {
-  render(<QuestionBox hostView={true} isDiscovered={true} coverText={"coverText"} text={"Question"}/>);
+  const item = { text: "Question", coverText: "coverText", isDiscovered: true }
+  render(<QuestionBox hostView={true} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).not.toBeInTheDocument()
   const text = screen.queryByText(/Question/i);
@@ -32,11 +30,30 @@ test('renders host view, discovered', async () => {
 });
 
 test('renders host view, hidden', async () => {
-  render(<QuestionBox hostView={true} isDiscovered={false} coverText={"coverText"} text={"Question"}/>);
+  const item = { text: "Question", coverText: "coverText", isDiscovered: false }
+  render(<QuestionBox hostView={true} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).not.toBeInTheDocument()
   const text = screen.queryByText(/Question/i);
   expect(text).toBeInTheDocument();
+});
+
+
+test('toggles discovered state', async () => {
+  const item = { text: "Question", coverText: "coverText", isDiscovered: false }
+  render(<QuestionBox hostView={true} item={item} />);
+  const coverText = screen.queryByText(/coverText/i);
+  expect(coverText).not.toBeInTheDocument()
+  const text = screen.queryByText(/Question/i);
+  expect(text).toBeInTheDocument();
+
+  await click(text);
+  await act(() => {
+    const coverText = screen.queryByText(/coverText/i);
+    expect(coverText).not.toBeInTheDocument()
+    const text = screen.queryByText(/Question/i);
+    expect(text).toBeInTheDocument();
+  })
 });
 
 
