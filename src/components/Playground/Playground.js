@@ -15,7 +15,7 @@ function addRefs(answers) {
   return newAnswers
 }
 
-const ScoreAdditionMode = {
+export const ScoreAdditionMode = {
   ADD: "add",
   SET: "set",
   STEAL: "steal"
@@ -102,6 +102,14 @@ class Playground extends Component {
     })
   }
 
+  toggleScoreAdditionMode = () => {
+    if (this.state.scoreAdditionMode === ScoreAdditionMode.ADD) {
+      this.setState({ scoreAdditionMode: ScoreAdditionMode.STEAL })
+    } else {
+      this.setState({ scoreAdditionMode: ScoreAdditionMode.ADD })
+    }
+  }
+
   triggerSetActivePlayer = (activePlayerName) => {
     const currentPlayers = this.state.players
     this.setActivePlayer(activePlayerName)
@@ -110,13 +118,6 @@ class Playground extends Component {
       let activePlayer = currentPlayers.find(x => x.active === true)
       this.setActivePlayer((activePlayer && activePlayer.name) || null)
     })
-  }
-
-  triggerSteal = () => {
-    const activePlayer = this.state.players.find(x => x.active === true)
-    if (activePlayer) {
-      this.updateScore(activePlayer.name, 0, ScoreAdditionMode.STEAL)
-    }
   }
 
   triggerToggleQuestionItemRevealed = () => {
@@ -153,7 +154,8 @@ class Playground extends Component {
         newFinalScore = pointsToAdd
       }
       if (ScoreAdditionMode.STEAL === scoreAdditionMode) {
-        newFinalScore = performSteal();
+        pointsToAdd = 0
+        newFinalScore = performSteal()
       }
 
       targetPlayer.ref.current.setScore(newFinalScore)
@@ -169,7 +171,7 @@ class Playground extends Component {
 
   render() {
     const { hostView, roundId } = this.props
-    const { questionItem, players } = this.state
+    const { players, questionItem, scoreAdditionMode } = this.state
 
     return (
         <div className="Playground">
@@ -188,7 +190,7 @@ class Playground extends Component {
             <PlayerGrid hostView={hostView} onManualEditScore={this.onManualEditScore}
                         players={players} setActivePlayer={this.triggerSetActivePlayer} />
             {hostView &&
-                <HostActions triggerSteal={this.triggerSteal} />
+                <HostActions scoreAdditionMode={scoreAdditionMode} onToggle={this.toggleScoreAdditionMode} />
             }
           </Fragment>
         </div>

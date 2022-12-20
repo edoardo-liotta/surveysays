@@ -1,7 +1,8 @@
 import './Playground.css';
 import '../common.css';
 import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
-import { Cancel, Menu, SwipeDown } from '@mui/icons-material';
+import { Add, Cancel, Menu, SwipeVertical } from '@mui/icons-material';
+import { ScoreAdditionMode } from './Playground';
 
 function HostActions(props) {
   return <div className={"HostActions"}>
@@ -11,8 +12,13 @@ function HostActions(props) {
           <Cancel htmlColor={"darkred"} />
         </IconButton>
         <Box sx={{ flexGrow: 1 }} />
-        <IconButton color="inherit" onClick={props.triggerSteal}>
-          <SwipeDown />
+        <IconButton color="inherit" onClick={props.onToggle}>
+          {props.scoreAdditionMode === ScoreAdditionMode.ADD &&
+              <Add />
+          }
+          {props.scoreAdditionMode === ScoreAdditionMode.STEAL &&
+              <SwipeVertical />
+          }
         </IconButton>
         <Box sx={{ flexGrow: 2 }} />
         <IconButton color="inherit">
