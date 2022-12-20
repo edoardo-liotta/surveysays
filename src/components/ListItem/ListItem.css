@@ -30,6 +30,10 @@
     width: 90vmin;
 }
 
+.ListItem-header.host-view {
+    min-height: 50px;
+}
+
 .ListItem-number {
     align-items: center;
     background-color: navy;
@@ -50,12 +54,19 @@
     min-height: inherit;
 }
 
+.ListItem-answer.host-view {
+    font-size: smaller;
+    min-height: 50px;
+}
+
 .ListItem-answer.host-view:not(.is-discovered) {
     background-color: darkgray;
 }
+
 .ListItem-answer.host-view:not(.is-discovered) .ListItem-answer-number {
     background-color: gray;
 }
+
 .ListItem-answer.host-view:not(.is-discovered) .ListItem-points {
     background-color: gray;
 }

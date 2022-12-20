@@ -14,22 +14,26 @@
   font-size: 1.75em;
   font-weight: bold;
   min-height: calc(15px + 2vmax);
-  justify-content: center;
-  text-decoration-color: #282c34;
-  text-transform: uppercase;
-  width: 90vmin;
+    justify-content: center;
+    text-decoration-color: #282c34;
+    text-transform: uppercase;
+    width: 90vmin;
 }
 
 .QuestionBox-question {
-  border-radius: 100px;
+    border-radius: 100px;
+}
+
+.QuestionBox-question.host-view.is-discovered {
+    font-size: 12pt;
 }
 
 .QuestionBox-question.host-view:not(.is-discovered) {
-  background-color: gray;
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(150px + 2vmax);
+    background-color: gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(150px + 2vmax);
 }
 
 @media (orientation: landscape) {

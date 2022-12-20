@@ -8,15 +8,16 @@ const isDiscoveredClass = "is-discovered"
 const serviceApi = new ServiceApi()
 
 function QuestionBox(props) {
-  const { hostView, roundId, item } = props
+  const { hostView, roundId, item, onToggle } = props
 
   const [discovered, setDiscovered] = useState(item && item.isDiscovered === true)
 
   function toggleState() {
     let initialState = discovered;
     let newDiscovered = !initialState;
-    setDiscovered(newDiscovered)
-    serviceApi.updateRound(roundId, item.id, newDiscovered, (_) => setDiscovered(initialState))
+    setDiscovered(newDiscovered);
+    onToggle(newDiscovered);
+    serviceApi.updateRound(roundId, item.id, newDiscovered, (_) => setDiscovered(initialState));
   }
 
   return (

@@ -88,19 +88,18 @@ function AppView(hostView, roundId) {
   return (
       <div className="App">
         <header className="App-header">
-          <Playground key={"playground"} hostView={hostView} roundId={roundId} roundInfo={roundInfo}
-                      roundHash={roundHash} />
+          <Playground key={roundHash} hostView={hostView} roundId={roundId} roundInfo={roundInfo} />
         </header>
       </div>
   )
 }
 
 function Host() {
-  return AppView(true, 1)
+  return AppView(true, 2)
 }
 
 function Present() {
-  return AppView(false, 1);
+  return AppView(false, 2);
 }
 
 export default App;

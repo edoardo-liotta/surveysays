@@ -21,7 +21,8 @@ function ListItem(props) {
 
   return (
       <div className="ListItem" key={id} onClick={toggleState}>
-        <header className="ListItem-header">
+        <header
+            className={"ListItem-header " + (hostView ? hostViewClass : "") + " " + (discovered ? isDiscoveredClass : "")}>
           {coverText && !hostView && !discovered &&
               <div className="ListItem-number">
                 <div className="spacer" />
