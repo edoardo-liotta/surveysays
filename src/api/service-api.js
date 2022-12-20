@@ -4,9 +4,10 @@ class ServiceApi {
 
   serviceUrl = getServiceUrl()
   host = new URL(this.serviceUrl).host
+  protocol = new URL(this.serviceUrl).protocol
 
   createSocketConnection = () => {
-    return new WebSocket(`ws://${this.host}/connect`);
+    return new WebSocket(`${(this.protocol === "https:" ? "wss" : "ws")}://${this.host}/connect`);
   }
 
   getRound = (roundId) => {
