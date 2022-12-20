@@ -1,4 +1,5 @@
 import './QuestionBox.css';
+import '../common.css';
 
 const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"

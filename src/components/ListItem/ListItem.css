@@ -79,10 +79,6 @@
     min-height: inherit;
 }
 
-.spacer {
-    width: 2vmax;
-}
-
 .ListItem-points {
     align-items: center;
     background-color: brown;

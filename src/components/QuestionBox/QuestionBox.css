@@ -34,10 +34,11 @@
   min-height: calc(150px + 2vmax);
 }
 
-@media (min-width: 1024px) {
+@media (orientation: landscape) {
   .QuestionBox-header {
     min-height: calc(50px + 2vmax);
     font-size: 1.75em;
     font-weight: bold;
+    width: 180vmin;
   }
 }

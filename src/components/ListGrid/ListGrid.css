@@ -6,7 +6,7 @@
   grid-template-columns: 1fr;
 }
 
-@media (min-width: 1024px) {
+@media (orientation: landscape) {
   .ListGrid {
     grid-auto-flow: column;
     grid-template-rows: 1fr 1fr 1fr 1fr;

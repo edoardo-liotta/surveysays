@@ -1,4 +1,6 @@
 import './ListGrid.css';
+import '../common.css';
+
 import ListItem from '../ListItem/ListItem';
 
 function ListGrid() {
