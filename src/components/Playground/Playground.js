@@ -5,7 +5,6 @@ import QuestionBox from '../QuestionBox/QuestionBox';
 import ListGrid from '../ListGrid/ListGrid';
 import { Component, createRef, Fragment } from 'react';
 import ServiceApi from '../../api/service-api';
-import { CssBaseline } from '@mui/material';
 import HostActions from './HostActions';
 
 function addRefs(answers) {
@@ -35,14 +34,52 @@ class Playground extends Component {
 
   serviceApi = new ServiceApi()
 
-  triggerSetActivePlayer = (activePlayerName) => {
-    const currentPlayers = this.state.players
-    this.setActivePlayer(activePlayerName)
-    this.serviceApi.setActivePlayer(this.props.roundId, activePlayerName, () => {
-    }, () => {
-      let activePlayer = currentPlayers.find(x => x.active === true)
-      this.setActivePlayer((activePlayer && activePlayer.name) || null)
-    })
+  animateRevealed = (itemId, newRevealedState) => {
+    const item = this.state.answerItems.find(x => itemId === x.id)
+    if (item) {
+      item.ref.current.animateToggle(newRevealedState)
+    }
+    if (itemId === this.state.questionItem.id) {
+      this.toggleQuestionItemRevealed(newRevealedState)
+    }
+  }
+
+  getAnswerItems = () => {
+    const isHostView = this.props.hostView === true;
+    const isQuestionItemNotRevealed = this.state.questionItem.isRevealed !== true
+    const shouldCompressAnswerItems = isHostView && isQuestionItemNotRevealed
+    const numberOfAnswerItems = this.state.answerItems.length
+    return shouldCompressAnswerItems ? [{
+      id: "compressed-answers",
+      isRevealed: false,
+      text: `${numberOfAnswerItems} risposte`
+    }] : this.state.answerItems
+  }
+
+  isAllAnswerItemsRevealed = () => {
+    return this.state.answerItems.every(x => x.isRevealed === true)
+  }
+
+  onItemReveal = (itemId, newState) => {
+    const newAnswerItems = [...this.state.answerItems]
+    const item = newAnswerItems.find(x => itemId === x.id)
+    if (item) {
+      item.isRevealed = newState
+      this.setState({ answerItems: newAnswerItems })
+      if (newState === true && item.points) {
+        const activePlayer = this.state.players.find(x => x.active === true)
+        if (activePlayer) {
+          this.updateScore(activePlayer.name, item.points, this.state.scoreAdditionMode)
+        }
+      }
+    }
+  }
+
+  onManualEditScore = (targetPlayerName, newScore) => {
+    this.updateScore(targetPlayerName, newScore, ScoreAdditionMode.SET)
+    if (this.props.hostView) {
+      this.serviceApi.forceRefresh(this.props.roundId)
+    }
   }
 
   setActivePlayer = (activePlayerName) => {
@@ -56,16 +93,6 @@ class Playground extends Component {
     this.setState({ players: newPlayers })
   }
 
-  animateRevealed = (itemId, newRevealedState) => {
-    const item = this.state.answerItems.find(x => itemId === x.id)
-    if (item) {
-      item.ref.current.animateToggle(newRevealedState)
-    }
-    if (itemId === this.state.questionItem.id) {
-      this.toggleQuestionItemRevealed(newRevealedState)
-    }
-  }
-
   toggleQuestionItemRevealed = (stateChange) => {
     this.setState({
       questionItem: {
@@ -75,37 +102,14 @@ class Playground extends Component {
     })
   }
 
-  triggerToggleQuestionItemRevealed = () => {
-    this.toggleQuestionItemRevealed(!this.state.questionItem.isRevealed)
-  }
-
-  answerItems = () => {
-    const isHostView = this.props.hostView === true;
-    const isQuestionItemNotRevealed = this.state.questionItem.isRevealed !== true
-    const shouldCompressAnswerItems = isHostView && isQuestionItemNotRevealed
-    const numberOfAnswerItems = this.state.answerItems.length
-    return shouldCompressAnswerItems ? [{
-      id: "compressed-answers",
-      isRevealed: false,
-      text: `${numberOfAnswerItems} risposte`
-    }] : this.state.answerItems
-  }
-
-  onItemReveal = (itemId, newState) => {
-    const item = this.state.answerItems.find(x => itemId === x.id)
-    if (newState === true && item && item.points) {
-      const activePlayer = this.state.players.find(x => x.active === true)
-      if (activePlayer) {
-        this.updateScore(activePlayer.name, item.points, this.state.scoreAdditionMode)
-      }
-    }
-  }
-
-  onManualEditScore = (targetPlayerName, newScore) => {
-    this.updateScore(targetPlayerName, newScore, ScoreAdditionMode.SET)
-    if (this.props.hostView) {
-      this.serviceApi.forceRefresh(this.props.roundId)
-    }
+  triggerSetActivePlayer = (activePlayerName) => {
+    const currentPlayers = this.state.players
+    this.setActivePlayer(activePlayerName)
+    this.serviceApi.setActivePlayer(this.props.roundId, activePlayerName, () => {
+    }, () => {
+      let activePlayer = currentPlayers.find(x => x.active === true)
+      this.setActivePlayer((activePlayer && activePlayer.name) || null)
+    })
   }
 
   triggerSteal = () => {
@@ -115,36 +119,45 @@ class Playground extends Component {
     }
   }
 
+  triggerToggleQuestionItemRevealed = () => {
+    this.toggleQuestionItemRevealed(!this.state.questionItem.isRevealed)
+  }
+
   updateScore = (targetPlayerName, pointsToAdd, scoreAdditionMode) => {
     const newPlayers = [...this.state.players]
     const targetPlayer = newPlayers.find(x => x.name === targetPlayerName)
+
+    function performSteal() {
+      let scoreToSteal = 0
+      newPlayers.forEach(x => {
+        if (x => x.name !== targetPlayerName) {
+          scoreToSteal += x.score
+          x.ref.current.setScore(0)
+          x.score = 0
+        }
+      })
+
+      return targetPlayer.score + pointsToAdd + scoreToSteal
+    }
+
     if (targetPlayer) {
+      let newFinalScore = targetPlayer.score
       if (ScoreAdditionMode.ADD === scoreAdditionMode) {
-        const current = targetPlayer.ref.current;
-        const score = current.state.score + pointsToAdd
-        current.setScore(score)
-        targetPlayer.score = score
+        if (this.isAllAnswerItemsRevealed()) {
+          newFinalScore = performSteal()
+        } else {
+          newFinalScore = targetPlayer.score + pointsToAdd
+        }
       }
       if (ScoreAdditionMode.SET === scoreAdditionMode) {
-        const current = targetPlayer.ref.current;
-        const score = pointsToAdd
-        current.setScore(score)
-        targetPlayer.score = score
+        newFinalScore = pointsToAdd
       }
       if (ScoreAdditionMode.STEAL === scoreAdditionMode) {
-        let scoreToSteal = 0
-        newPlayers.forEach(x => {
-          if (x => x.name !== targetPlayerName) {
-            scoreToSteal += x.score
-            x.ref.current.setScore(0)
-            x.score = 0
-          }
-        })
-
-        const score = targetPlayer.score + pointsToAdd + scoreToSteal
-        targetPlayer.ref.current.setScore(score)
-        targetPlayer.score = score
+        newFinalScore = performSteal();
       }
+
+      targetPlayer.ref.current.setScore(newFinalScore)
+      targetPlayer.score = newFinalScore
     }
 
     this.setState({ players: newPlayers })
@@ -161,7 +174,6 @@ class Playground extends Component {
     return (
         <div className="Playground">
           <Fragment>
-            <CssBaseline />
             <header className="Playground-header">
 
             </header>
@@ -171,7 +183,7 @@ class Playground extends Component {
                          item={questionItem} onToggle={this.triggerToggleQuestionItemRevealed} />
             <div className="spacer" />
             <ListGrid hostView={hostView} roundId={roundId}
-                      items={this.answerItems()} onToggleReveal={this.onItemReveal} />
+                      items={this.getAnswerItems()} onToggleReveal={this.onItemReveal} />
             <div className="spacer" />
             <PlayerGrid hostView={hostView} onManualEditScore={this.onManualEditScore}
                         players={players} setActivePlayer={this.triggerSetActivePlayer} />
