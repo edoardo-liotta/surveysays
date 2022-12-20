@@ -22,13 +22,6 @@ function QuestionBox(props) {
               <div
                   className={"QuestionBox-question " + (hostView ? hostViewClass : "") + " " + (isDiscovered ? isDiscoveredClass : "")}>
                 <div className="QuestionBox-text">
-                  {coverText && hostView && isDiscovered &&
-                      <div className="QuestionBox-question-cover">
-                        <div className="spacer" />
-                        <div>{coverText}</div>
-                        <div className="spacer" />
-                      </div>
-                  }
                   {(isDiscovered || hostView) && <>
                     <div className="spacer" />
                     {text}

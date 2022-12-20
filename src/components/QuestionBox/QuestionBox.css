@@ -1,9 +1,7 @@
 .QuestionBox {
   align-items: center;
   justify-content: center;
-  display: grid;
-  grid-auto-flow: row;
-  grid-template-columns: 1fr;
+  display: block;
 }
 
 .QuestionBox-header {
@@ -13,9 +11,9 @@
   border-radius: 100px;
   color: white;
   display: flex;
-  font-size: 1.75em;
+  font-size: 1em;
   font-weight: bold;
-  min-height: calc(50px + 2vmax);
+  min-height: calc(15px + 2vmax);
   justify-content: center;
   text-decoration-color: #282c34;
   text-transform: uppercase;
@@ -28,11 +26,18 @@
 
 .QuestionBox-question.host-view:not(.is-discovered) {
   background-color: gray;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75em;
+  font-weight: bold;
+  min-height: calc(150px + 2vmax);
 }
 
 @media (min-width: 1024px) {
-  .QuestionBox {
-    grid-auto-flow: column;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+  .QuestionBox-header {
+    min-height: calc(50px + 2vmax);
+    font-size: 1.75em;
+    font-weight: bold;
   }
 }
