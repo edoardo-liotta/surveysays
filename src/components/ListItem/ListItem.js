@@ -1,4 +1,4 @@
-import logo from '..//logo.svg';
+import logo from '../../logo.svg';
 import './ListItem.css';
 
 function ListItem(props) {
@@ -6,7 +6,7 @@ function ListItem(props) {
   return (
     <div className="ListItem">
       <header className="ListItem-header">
-        {itemNumber !== undefined &&
+        {itemNumber &&
             <div className="ListItem-number">
               <div className="spacer" />
               <div className="spacer" />
@@ -15,15 +15,17 @@ function ListItem(props) {
               <div className="spacer" />
             </div>
         }
-        {itemNumber === undefined && text !== undefined && points !== undefined &&
+        {text &&
             <div className="ListItem-answer">
               <div className="ListItem-text">
                 <div className="spacer"/>
                 {text}
               </div>
-              <div className="ListItem-points">
-                {points}
-              </div>
+              {points &&
+                  <div className="ListItem-points">
+                    {points}
+                  </div>
+              }
             </div>
         }
 
