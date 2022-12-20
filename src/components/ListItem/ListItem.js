@@ -5,26 +5,26 @@ import ServiceApi from '../../api/service-api';
 import { CSSTransition } from 'react-transition-group';
 
 const hostViewClass = "host-view"
-const isDiscoveredClass = "is-discovered"
+const isRevealedClass = "is-revealed"
 const serviceApi = new ServiceApi()
 
 function ListItem(props) {
-  const { roundId, id, hostView, isDiscovered, coverText, text, points } = props
+  const { roundId, id, hostView, isRevealed, coverText, text, points } = props
 
-  const [discovered, setDiscovered] = useState(isDiscovered)
-  const [animateDiscovered, setAnimateDiscovered] = useState(isDiscovered)
+  const [revealed, setRevealed] = useState(isRevealed)
+  const [animateRevealed, setAnimateRevealed] = useState(isRevealed)
 
   function animateToggle() {
-    setAnimateDiscovered(!discovered)
+    setAnimateRevealed(!revealed)
   }
 
   function toggleState() {
-    let initialState = discovered;
-    let newDiscovered = !initialState;
-    setDiscovered(newDiscovered)
+    let initialState = revealed;
+    let newRevealed = !initialState;
+    setRevealed(newRevealed)
     if (id && "compressed-answers" !== id) {
-      serviceApi.updateRound(roundId, id, newDiscovered, (_) => {
-      }, (_) => setDiscovered(initialState))
+      serviceApi.updateRound(roundId, id, newRevealed, (_) => {
+      }, (_) => setRevealed(initialState))
     }
   }
 
@@ -33,11 +33,11 @@ function ListItem(props) {
   return (
       <div className="ListItem" key={id} onClick={animateToggle}>
         <header
-            className={"ListItem-header " + (hostView ? hostViewClass : "") + " " + (discovered ? isDiscoveredClass : "")}>
-          <CSSTransition nodeRef={nodeRef} in={animateDiscovered} timeout={300}
-                         classNames={isDiscoveredClass} onEntering={toggleState} onExited={toggleState}>
+            className={"ListItem-header " + (hostView ? hostViewClass : "") + " " + (revealed ? isRevealedClass : "")}>
+          <CSSTransition nodeRef={nodeRef} in={animateRevealed} timeout={300}
+                         classNames={isRevealedClass} onEntering={toggleState} onExited={toggleState}>
             <div ref={nodeRef}>
-              {coverText && !hostView && !discovered &&
+              {coverText && !hostView && !revealed &&
                   <div className="ListItem-number">
                     <div className="spacer" />
                     <div className="spacer" />
@@ -49,7 +49,7 @@ function ListItem(props) {
 
               {text &&
                   <div
-                      className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (discovered ? isDiscoveredClass : "")}>
+                      className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (revealed ? isRevealedClass : "")}>
                     <div className="ListItem-text">
                       {coverText &&
                           <div className="ListItem-number">

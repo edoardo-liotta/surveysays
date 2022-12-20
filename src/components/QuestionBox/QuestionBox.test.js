@@ -2,8 +2,8 @@ import { act, render, screen } from '@testing-library/react';
 import QuestionBox from './QuestionBox';
 import { click } from '@testing-library/user-event/dist/click';
 
-test('renders player view, discovered', async () => {
-  const item = { text: "Question", coverText: "coverText", isDiscovered: true }
+test('renders player view, revealed', async () => {
+  const item = { text: "Question", coverText: "coverText", isRevealed: true }
   render(<QuestionBox hostView={false} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).not.toBeInTheDocument()
@@ -12,7 +12,7 @@ test('renders player view, discovered', async () => {
 });
 
 test('renders player view, hidden', async () => {
-  const item = { text: "Question", coverText: "coverText", isDiscovered: false }
+  const item = { text: "Question", coverText: "coverText", isRevealed: false }
   render(<QuestionBox hostView={false} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).toBeInTheDocument()
@@ -20,8 +20,8 @@ test('renders player view, hidden', async () => {
   expect(text).not.toBeInTheDocument();
 });
 
-test('renders host view, discovered', async () => {
-  const item = { text: "Question", coverText: "coverText", isDiscovered: true }
+test('renders host view, revealed', async () => {
+  const item = { text: "Question", coverText: "coverText", isRevealed: true }
   render(<QuestionBox hostView={true} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).not.toBeInTheDocument()
@@ -30,7 +30,7 @@ test('renders host view, discovered', async () => {
 });
 
 test('renders host view, hidden', async () => {
-  const item = { text: "Question", coverText: "coverText", isDiscovered: false }
+  const item = { text: "Question", coverText: "coverText", isRevealed: false }
   render(<QuestionBox hostView={true} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).not.toBeInTheDocument()
@@ -39,8 +39,8 @@ test('renders host view, hidden', async () => {
 });
 
 
-test('toggles discovered state', async () => {
-  const item = { text: "Question", coverText: "coverText", isDiscovered: false }
+test('toggles revealed state', async () => {
+  const item = { text: "Question", coverText: "coverText", isRevealed: false }
   render(<QuestionBox hostView={true} item={item} />);
   const coverText = screen.queryByText(/coverText/i);
   expect(coverText).not.toBeInTheDocument()

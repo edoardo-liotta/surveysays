@@ -3,7 +3,7 @@ import ListItem from './ListItem';
 import { click } from '@testing-library/user-event/dist/click';
 
 test('renders covered list item, player view', async () => {
-  render(<ListItem hostView={false} isDiscovered={false} coverText={"1"} text={"Sample"} points={"2"} />);
+  render(<ListItem hostView={false} isRevealed={false} coverText={"1"} text={"Sample"} points={"2"} />);
   const number = screen.getByText(/1/i);
   expect(number).toBeInTheDocument()
   const text = screen.queryByText(/Sample/i);
@@ -15,7 +15,7 @@ test('renders covered list item, player view', async () => {
 });
 
 test('renders covered list item, host view', () => {
-  render(<ListItem hostView={true} isDiscovered={false} coverText={"1"} text={"Sample"} points={"2"} />);
+  render(<ListItem hostView={true} isRevealed={false} coverText={"1"} text={"Sample"} points={"2"} />);
   const text = screen.getByText(/Sample/i);
   expect(text).toBeInTheDocument();
   expect(text).toBeVisible();
@@ -24,8 +24,8 @@ test('renders covered list item, host view', () => {
   expect(points).toBeVisible();
 });
 
-test('renders discovered list item', () => {
-  render(<ListItem hostView={false} isDiscovered={true} coverText={"1"} text={"Sample"} points={"2"} />);
+test('renders revealed list item', () => {
+  render(<ListItem hostView={false} isRevealed={true} coverText={"1"} text={"Sample"} points={"2"} />);
   const text = screen.getByText(/Sample/i);
   expect(text).toBeInTheDocument();
   expect(text).toBeVisible();
@@ -34,8 +34,8 @@ test('renders discovered list item', () => {
   expect(points).toBeVisible();
 });
 
-test('toggles discovered state', async () => {
-  render(<ListItem hostView={false} isDiscovered={false} coverText={"1"} text={"Sample"} points={"2"} />);
+test('toggles revealed state', async () => {
+  render(<ListItem hostView={false} isRevealed={false} coverText={"1"} text={"Sample"} points={"2"} />);
   const number = screen.getByText(/1/i);
   expect(number).toBeInTheDocument()
   const text = screen.queryByText(/Sample/i);

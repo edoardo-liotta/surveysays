@@ -5,10 +5,10 @@ class ServiceApi {
   //host = "d283-165-225-202-155.eu.ngrok.io"
   //schema = "https"
 
-  updateRound = (roundId, itemId, newDiscovered, thenCallback, catchCallback) => {
+  updateRound = (roundId, itemId, newRevealed, thenCallback, catchCallback) => {
     fetch(`${this.schema}://${this.host}/round/${roundId}/update`, {
       method: 'POST',
-      body: JSON.stringify({ id: itemId, isDiscovered: newDiscovered }),
+      body: JSON.stringify({ id: itemId, isRevealed: newRevealed }),
       headers: { 'Content-Type': 'application/json' }
     })
         .then(thenCallback)

@@ -41,15 +41,15 @@
     min-height: 50px;
 }
 
-.ListItem-answer.host-view:not(.is-discovered) {
+.ListItem-answer.host-view:not(.is-revealed) {
     background-color: darkgray;
 }
 
-.ListItem-answer.host-view:not(.is-discovered) .ListItem-answer-number {
+.ListItem-answer.host-view:not(.is-revealed) .ListItem-answer-number {
     background-color: gray;
 }
 
-.ListItem-answer.host-view:not(.is-discovered) .ListItem-points {
+.ListItem-answer.host-view:not(.is-revealed) .ListItem-points {
     background-color: gray;
 }
 

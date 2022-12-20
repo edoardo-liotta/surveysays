@@ -9,7 +9,7 @@ function ListGrid(props) {
   function listItem(item, i) {
     if (item) {
       return <ListItem key={JSON.stringify(item) + i} roundId={roundId} id={item.id} hostView={hostView}
-                       isDiscovered={item.isDiscovered}
+                       isRevealed={item.isRevealed}
                        coverText={item.coverText}
                        text={item.text} points={item.points} />
     } else if (!hostView) {

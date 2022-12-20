@@ -24,11 +24,11 @@
     border-radius: 100px;
 }
 
-.QuestionBox-question.host-view.is-discovered {
+.QuestionBox-question.host-view.is-revealed {
     font-size: 12pt;
 }
 
-.QuestionBox-question.host-view:not(.is-discovered) {
+.QuestionBox-question.host-view:not(.is-revealed) {
     background-color: gray;
     display: flex;
     align-items: center;

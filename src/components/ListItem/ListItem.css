@@ -23,7 +23,7 @@
     min-height: inherit;
 }
 
-.ListItem-header.is-discovered > div {
+.ListItem-header.is-revealed > div {
     width: inherit;
 }
 
@@ -60,37 +60,37 @@
     min-height: 50px;
 }
 
-.ListItem-answer.host-view:not(.is-discovered) {
+.ListItem-answer.host-view:not(.is-revealed) {
     background-color: darkgray;
 }
 
-.ListItem-answer.host-view:not(.is-discovered) .ListItem-number {
+.ListItem-answer.host-view:not(.is-revealed) .ListItem-number {
     background-color: gray;
 }
 
-.ListItem-answer.host-view:not(.is-discovered) .ListItem-points {
+.ListItem-answer.host-view:not(.is-revealed) .ListItem-points {
     background-color: gray;
 }
 
-.ListItem-answer:not(.host-view):not(.is-discovered) {
+.ListItem-answer:not(.host-view):not(.is-revealed) {
     display: none;
 }
 
-.is-discovered-enter {
+.is-revealed-enter {
     opacity: 0;
 }
 
-.is-discovered-enter-active {
+.is-revealed-enter-active {
     display: block;
     opacity: 1;
     transition: all 300ms;
 }
 
-.is-discovered-exit {
+.is-revealed-exit {
     opacity: 1;
 }
 
-.is-discovered-exit-active {
+.is-revealed-exit-active {
     opacity: 0;
     transition: all 300ms;
 }

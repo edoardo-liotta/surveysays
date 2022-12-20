@@ -11,7 +11,7 @@ class Playground extends Component {
     super(props);
     this.state = {
       answerItems: (this.props.roundInfo && this.props.roundInfo.items) || [],
-      questionItemRevealed: ((this.props.roundInfo && this.props.roundInfo.questionItem && this.props.roundInfo.questionItem.isDiscovered === true) || false),
+      questionItemRevealed: ((this.props.roundInfo && this.props.roundInfo.questionItem && this.props.roundInfo.questionItem.isRevealed === true) || false),
       players: [{
         name: "Player 1",
         active: false,
@@ -55,7 +55,7 @@ class Playground extends Component {
     const numberOfAnswerItems = this.state.answerItems.length
     return shouldCompressAnswerItems ? [{
       id: "compressed-answers",
-      isDiscovered: false,
+      isRevealed: false,
       text: `${numberOfAnswerItems} risposte`
     }] : this.state.answerItems
   }
