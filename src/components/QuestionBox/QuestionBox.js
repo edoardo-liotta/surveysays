@@ -1,6 +1,7 @@
 import './QuestionBox.css';
 import '../common.css';
 import { useState } from 'react';
+import ServiceApi from '../../api/service-api';
 
 const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
@@ -8,10 +9,13 @@ const isDiscoveredClass = "is-discovered"
 function QuestionBox(props) {
   const { hostView, roundId, item } = props
 
-  const [discovered, setDiscovered] = useState(item && item.isDiscovered)
+  const [discovered, setDiscovered] = useState(item && item.isDiscovered === true)
 
   function toggleState() {
-    setDiscovered(!discovered)
+    let initialState = discovered;
+    let newDiscovered = !initialState;
+    setDiscovered(newDiscovered)
+    new ServiceApi().updateRound(roundId, item.id, newDiscovered, (_) => setDiscovered(initialState))
   }
 
   return (

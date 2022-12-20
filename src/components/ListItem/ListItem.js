@@ -1,6 +1,7 @@
 import './ListItem.css';
 import '../common.css';
 import { useState } from 'react';
+import ServiceApi from '../../api/service-api';
 
 const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
@@ -12,16 +13,9 @@ function ListItem(props) {
 
   function toggleState() {
     let initialState = discovered;
-    setDiscovered(!initialState)
-    fetch(`http://localhost:8080/round/${roundId}/update`, {
-      method: 'POST',
-      body: JSON.stringify({ id, isDiscovered: true }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-        .then((res) => console.log(res))
-        .catch((_) => {
-          setDiscovered(initialState)
-        })
+    let newDiscovered = !initialState;
+    setDiscovered(newDiscovered)
+    new ServiceApi().updateRound(roundId, id, newDiscovered, (_) => setDiscovered(initialState))
   }
 
   return (
