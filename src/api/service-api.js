@@ -2,53 +2,62 @@ import { getServiceUrl } from './config-api';
 
 class ServiceApi {
 
-  serviceUrl = getServiceUrl()
-  host = new URL(this.serviceUrl).host
-  protocol = new URL(this.serviceUrl).protocol
-
   createSocketConnection = () => {
-    return new WebSocket(`${(this.protocol === "https:" ? "wss" : "ws")}://${this.host}/connect`);
+    const url = new URL(getServiceUrl());
+    return new WebSocket(`${(url.protocol === "https:" ? "wss" : "ws")}://${url.host}/connect`);
   }
 
   getRound = (roundId) => {
-    return fetch(`${this.serviceUrl}/round/${roundId}`).then(r => r.json())
+    return fetch(`${(getServiceUrl())}/round/${roundId}`, {
+      headers: { "ngrok-skip-browser-warning": "any" }
+    }).then(r => r.json())
   }
 
   updateRound = (roundId, itemId, newRevealed, thenCallback, catchCallback) => {
-    fetch(`${this.serviceUrl}/round/${roundId}/update`, {
+    fetch(`${(getServiceUrl())}/round/${roundId}/update`, {
       method: 'POST',
       body: JSON.stringify({ id: itemId, isRevealed: newRevealed }),
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "any"
+      }
     })
         .then(thenCallback)
         .catch(catchCallback)
   }
 
   forceRefresh = (roundId, thenCallback, catchCallback) => {
-    fetch(`${this.serviceUrl}/round/${roundId}/force-refresh`, {
-      method: 'POST'
+    fetch(`${(getServiceUrl())}/round/${roundId}/force-refresh`, {
+      method: "POST",
+      headers: { "ngrok-skip-browser-warning": "any" }
     })
         .then(thenCallback)
         .catch(catchCallback)
   }
 
   updateScores = (roundId, players, thenCallback, catchCallback) => {
-    fetch(`${this.serviceUrl}/round/${roundId}/set-scores`, {
-      method: 'POST',
+    fetch(`${(getServiceUrl())}/round/${roundId}/set-scores`, {
+      method: "POST",
       body: JSON.stringify(players.map(x => {
         return { name: x.name, score: x.score }
       })),
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "any"
+      }
     })
         .then(thenCallback)
         .catch(catchCallback)
   }
 
   setActivePlayer = (roundId, name, thenCallback, catchCallback) => {
-    fetch(`${this.serviceUrl}/round/${roundId}/set-active-player`, {
-      method: 'POST',
+    fetch(`${(getServiceUrl())}/round/${roundId}/set-active-player`, {
+      method: "POST",
       body: JSON.stringify({ name }),
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "any"
+      }
     })
         .then(thenCallback)
         .catch(catchCallback)
