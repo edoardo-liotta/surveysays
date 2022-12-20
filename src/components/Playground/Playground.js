@@ -8,7 +8,7 @@ const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
 
 function Playground(props) {
-  const { hostView } = props
+  const { hostView, roundId } = props
 
   const [roundInfo, setRoundInfo] = useState({ question: {}, items: [] })
   const [fetching, setFetching] = useState(false)
@@ -22,7 +22,7 @@ function Playground(props) {
 
   useEffect(() => {
     if (fetching) {
-      fetch("http://localhost:8080/round/1").then(r => {
+      fetch(`http://localhost:8080/round/${roundId}`).then(r => {
         console.log(r)
         r.json().then(j => setRoundInfo(j))
       }).finally(() => {
@@ -39,9 +39,9 @@ function Playground(props) {
 
         </header>
         <div className="spacer" />
-        <QuestionBox hostView={hostView} item={roundInfo.question} />
+        <QuestionBox hostView={hostView} roundId={roundId} item={roundInfo.question} />
         <div className="spacer" />
-        <ListGrid hostView={hostView} items={roundInfo.items} />
+        <ListGrid hostView={hostView} roundId={roundId} items={roundInfo.items} />
       </div>
   );
 }

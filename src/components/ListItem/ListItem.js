@@ -1,17 +1,27 @@
 import './ListItem.css';
 import '../common.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
 
 function ListItem(props) {
-  const { id, hostView, isDiscovered, coverText, text, points } = props
+  const { roundId, id, hostView, isDiscovered, coverText, text, points } = props
 
   const [discovered, setDiscovered] = useState(isDiscovered)
 
   function toggleState() {
-    setDiscovered(!discovered)
+    let initialState = discovered;
+    setDiscovered(!initialState)
+    fetch(`http://localhost:8080/round/${roundId}/update`, {
+      method: 'POST',
+      body: JSON.stringify({ id, isDiscovered: true }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+        .then((res) => console.log(res))
+        .catch((_) => {
+          setDiscovered(initialState)
+        })
   }
 
   return (

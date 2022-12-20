@@ -34,7 +34,7 @@ function Host() {
   return (
       <div className="App">
         <header className="App-header">
-          <Playground hostView={true} />
+          <Playground hostView={true} roundId={1} />
         </header>
       </div>
   )
@@ -44,7 +44,7 @@ function Present() {
   return (
       <div className="App">
         <header className="App-header">
-          <Playground hostView={false} />
+          <Playground hostView={false} roundId={1} />
         </header>
       </div>
   )

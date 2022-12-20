@@ -6,7 +6,7 @@ const hostViewClass = "host-view"
 const isDiscoveredClass = "is-discovered"
 
 function QuestionBox(props) {
-  const { hostView, item } = props
+  const { hostView, roundId, item } = props
 
   const [discovered, setDiscovered] = useState(item && item.isDiscovered)
 
