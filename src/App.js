@@ -1,7 +1,7 @@
 import './App.css';
 import Playground from './components/Playground/Playground';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ServiceApi from './api/service-api';
 
 const serviceApi = new ServiceApi()
@@ -39,6 +39,7 @@ function AppView(hostView, roundId) {
   const [roundHash, setRoundHash] = useState("")
   const [fetching, setFetching] = useState(false)
   const [socketConnection, setSocketConnection] = useState()
+  const playground = useRef()
 
   useEffect(() => {
     console.log(roundInfo)
@@ -65,13 +66,17 @@ function AppView(hostView, roundId) {
 
   useEffect(() => {
     if (socketConnection !== undefined) {
-      socketConnection.onopen = function (event) {
+      socketConnection.onopen = function (_) {
         setFetching(true)
       }
       socketConnection.onmessage = function (event) {
-        let message = event.data;
+        console.log(event)
+        const message = event.data;
         if ("need-update" === message) {
           setFetching(true)
+        }
+        if (message && message.startsWith("set-player ")) {
+          playground.current.setActivePlayer(message.slice(11))
         }
       }
       socketConnection.onclose = function (event) {
@@ -88,7 +93,7 @@ function AppView(hostView, roundId) {
   return (
       <div className="App">
         <header className="App-header">
-          <Playground key={roundHash} hostView={hostView} roundId={roundId} roundInfo={roundInfo} />
+          <Playground key={roundHash} ref={playground} hostView={hostView} roundId={roundId} roundInfo={roundInfo} />
         </header>
       </div>
   )

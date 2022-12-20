@@ -3,13 +3,12 @@ import '../common.css';
 import PlayerBox from '../PlayerBox/PlayerBox';
 
 function PlayerGrid(props) {
-  const { players } = props
+  const { players, setActivePlayer } = props
 
   function playerBox(item) {
-    return <>
-      <PlayerBox key={JSON.stringify(item)} active={item.active || false} name={item.name || "Unknown"}
-                 score={item.score || 0} />
-    </>
+    return <PlayerBox key={item.name} ref={item.ref} active={item.active || false} name={item.name || "Unknown"}
+                      score={item.score || 0} setActivePlayer={setActivePlayer} />
+
   }
 
   return (

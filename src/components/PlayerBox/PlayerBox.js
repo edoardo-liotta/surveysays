@@ -1,28 +1,40 @@
 import './PlayerBox.css';
 import '../common.css';
-import { useState } from 'react';
-import ServiceApi from '../../api/service-api';
+import { Component } from 'react';
 
 const hostViewClass = "host-view"
 const isActiveClass = "is-active"
-const serviceApi = new ServiceApi()
 
-function PlayerBox(props) {
-  const { name, active, score, hostView } = props
-  const [isActive, setActive] = useState(active)
-
-  function toggleState() {
-    let newState = !isActive;
-    setActive(newState)
+class PlayerBox extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isActive: props.active,
+    }
   }
 
-  return (
-      <div className={"PlayerBox " + (hostView ? hostViewClass : "") + " " + (isActive ? isActiveClass : "")}
-           onClick={toggleState}>
-        <span>{name}</span><br />
-        <span>{score}</span>
-      </div>
-  );
+  setActive(newActive) {
+    this.state.isActive = newActive
+  }
+
+  render() {
+    const { name, score, hostView, setActivePlayer } = this.props
+    const { isActive } = this.state
+
+    function toggleState() {
+      const newName = isActive ? null : name
+      setActivePlayer(newName)
+    }
+
+    return (
+        <div
+            className={"PlayerBox " + (hostView ? hostViewClass : "") + " " + (this.state.isActive ? isActiveClass : "")}
+            onClick={toggleState}>
+          <span>{name}</span><br />
+          <span>{score}</span>
+        </div>
+    );
+  }
 }
 
 export default PlayerBox;

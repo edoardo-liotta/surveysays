@@ -19,6 +19,16 @@ class ServiceApi {
     return fetch(`${this.schema}://${this.host}/round/${roundId}`).then(r => r.json())
   }
 
+  setActivePlayer = (roundId, name, thenCallback, catchCallback) => {
+    fetch(`${this.schema}://${this.host}/round/${roundId}/set-active-player`, {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+        .then(thenCallback)
+        .catch(catchCallback)
+  }
+
   createSocketConnection = () => {
     return new WebSocket(`ws://${this.host}/connect`);
   }

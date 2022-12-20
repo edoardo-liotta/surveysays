@@ -1,7 +1,9 @@
 .PlayerGrid {
     align-items: center;
-    justify-content: center;
+    bottom: 2vmin;
     display: flex;
+    justify-content: center;
+    position: fixed;
 }
 
 .PlayerBox:not(:last-of-type) {
