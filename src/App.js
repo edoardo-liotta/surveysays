@@ -100,11 +100,11 @@ function AppView(hostView, roundId) {
 }
 
 function Host() {
-  return AppView(true, 2)
+  return AppView(true, 1)
 }
 
 function Present() {
-  return AppView(false, 2);
+  return AppView(false, 1);
 }
 
 export default App;

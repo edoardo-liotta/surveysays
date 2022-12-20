@@ -1,11 +1,6 @@
 .ListItem {
     margin-bottom: 0.8vmin;
     margin-left: 1.5vmin;
-    transition: all 300ms;
-}
-
-.ListItem * {
-    transition: all 300ms;
 }
 
 .ListItem-header {
@@ -24,8 +19,20 @@
     width: 90vmin;
 }
 
+.ListItem-header > div {
+    min-height: inherit;
+}
+
+.ListItem-header.is-discovered > div {
+    width: inherit;
+}
+
 .ListItem-header.host-view {
     min-height: 50px;
+}
+
+.ListItem-header.host-view > div {
+    width: inherit;
 }
 
 .ListItem-number {
@@ -63,6 +70,29 @@
 
 .ListItem-answer.host-view:not(.is-discovered) .ListItem-points {
     background-color: gray;
+}
+
+.ListItem-answer:not(.host-view):not(.is-discovered) {
+    display: none;
+}
+
+.is-discovered-enter {
+    opacity: 0;
+}
+
+.is-discovered-enter-active {
+    display: block;
+    opacity: 1;
+    transition: all 300ms;
+}
+
+.is-discovered-exit {
+    opacity: 1;
+}
+
+.is-discovered-exit-active {
+    opacity: 0;
+    transition: all 300ms;
 }
 
 .ListItem-text {

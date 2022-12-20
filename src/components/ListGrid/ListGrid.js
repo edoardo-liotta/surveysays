@@ -15,7 +15,7 @@ function ListGrid(props) {
     } else if (!hostView) {
       return <ListItem key={i} />
     } else {
-      return <div key={i}></div>
+      return <div key={`listitem-${i}`}></div>
     }
   }
 

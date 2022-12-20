@@ -9,10 +9,9 @@ import ServiceApi from '../../api/service-api';
 class Playground extends Component {
   constructor(props) {
     super(props);
-    const roundInfo = this.props.roundId
     this.state = {
       answerItems: (this.props.roundInfo && this.props.roundInfo.items) || [],
-      questionItemRevealed: ((roundInfo && roundInfo.questionItem && roundInfo.questionItem.isDiscovered === true) || false),
+      questionItemRevealed: ((this.props.roundInfo && this.props.roundInfo.questionItem && this.props.roundInfo.questionItem.isDiscovered === true) || false),
       players: [{
         name: "Player 1",
         active: false,
