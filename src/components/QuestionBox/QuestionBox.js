@@ -20,9 +20,7 @@ function QuestionBox(props) {
           {item && item.coverText && !hostView && !discovered &&
               <div className="QuestionBox-cover">
                 <div className="spacer" />
-                <div className="spacer" />
                 <div>{item.coverText}</div>
-                <div className="spacer" />
                 <div className="spacer" />
               </div>
           }
