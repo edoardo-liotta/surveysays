@@ -6,12 +6,19 @@ import ListGrid from '../ListGrid/ListGrid';
 import { Component, createRef } from 'react';
 import ServiceApi from '../../api/service-api';
 
+function addRefs(answers) {
+  const newAnswers = [...answers]
+  newAnswers.forEach((item) => {
+    item.ref = createRef()
+  })
+  return newAnswers
+}
 class Playground extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      answerItems: (this.props.roundInfo && this.props.roundInfo.items) || [],
-      questionItemRevealed: ((this.props.roundInfo && this.props.roundInfo.questionItem && this.props.roundInfo.questionItem.isRevealed === true) || false),
+      answerItems: addRefs((props.roundInfo && props.roundInfo.items) || []),
+      questionItem: (props.roundInfo && props.roundInfo.questionItem) || {},
       players: [{
         name: "Player 1",
         active: false,
@@ -44,14 +51,33 @@ class Playground extends Component {
     this.setState({ players: newPlayers })
   }
 
+  animateRevealed = (itemId, newRevealedState) => {
+    const item = this.state.answerItems.find(x => itemId === x.id)
+    if (item) {
+      item.ref.current.animateToggle(newRevealedState)
+    }
+    if (itemId === this.state.questionItem.id) {
+      this.toggleQuestionItemRevealed(newRevealedState)
+    }
+  }
+
   toggleQuestionItemRevealed = (stateChange) => {
     this.setState({
-      questionItemRevealed: stateChange
+      questionItem: {
+        ...this.state.questionItem,
+        isRevealed: stateChange,
+      },
     })
   }
 
+  triggerToggleQuestionItemRevealed = () => {
+    this.toggleQuestionItemRevealed(!this.state.questionItem.isRevealed)
+  }
+
   answerItems = () => {
-    const shouldCompressAnswerItems = this.props.hostView === true && !this.state.questionItemRevealed
+    const isHostView = this.props.hostView === true;
+    const isQuestionItemNotRevealed = this.state.questionItem.isRevealed !== true
+    const shouldCompressAnswerItems = isHostView && isQuestionItemNotRevealed
     const numberOfAnswerItems = this.state.answerItems.length
     return shouldCompressAnswerItems ? [{
       id: "compressed-answers",
@@ -61,8 +87,8 @@ class Playground extends Component {
   }
 
   render() {
-    const { hostView, roundId, roundInfo } = this.props
-    const { answerItems, players } = this.state
+    const { hostView, roundId } = this.props
+    const { questionItem, players } = this.state
 
     return (
         <div className="Playground">
@@ -70,10 +96,11 @@ class Playground extends Component {
 
           </header>
           <div className="spacer" />
-          <QuestionBox key={`${JSON.stringify(roundInfo.questionItem)}-question`} hostView={hostView} roundId={roundId}
-                       item={roundInfo.questionItem} onToggle={this.toggleQuestionItemRevealed} />
+          <QuestionBox key={`question-${questionItem.id}-${questionItem.isRevealed}`} hostView={hostView}
+                       roundId={roundId}
+                       item={questionItem} onToggle={this.triggerToggleQuestionItemRevealed} />
           <div className="spacer" />
-          <ListGrid key={JSON.stringify(answerItems)} hostView={hostView} roundId={roundId}
+          <ListGrid hostView={hostView} roundId={roundId}
                     items={this.answerItems()} />
           <div className="spacer" />
           <PlayerGrid

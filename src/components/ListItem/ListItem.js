@@ -1,6 +1,6 @@
 import './ListItem.css';
 import '../common.css';
-import { useRef, useState } from 'react';
+import { Component, createRef } from 'react';
 import ServiceApi from '../../api/service-api';
 import { CSSTransition } from 'react-transition-group';
 
@@ -8,72 +8,90 @@ const hostViewClass = "host-view"
 const isRevealedClass = "is-revealed"
 const serviceApi = new ServiceApi()
 
-function ListItem(props) {
-  const { roundId, id, hostView, isRevealed, coverText, text, points } = props
-
-  const [revealed, setRevealed] = useState(isRevealed)
-  const [animateRevealed, setAnimateRevealed] = useState(isRevealed)
-
-  function animateToggle() {
-    setAnimateRevealed(!revealed)
+class ListItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      revealed: props.isRevealed,
+      animateRevealed: props.isRevealed
+    }
+    this.nodeRef = createRef();
   }
 
-  function toggleState() {
-    let initialState = revealed;
-    let newRevealed = !initialState;
-    setRevealed(newRevealed)
+  triggerToggleRevealed = () => {
+    let initialState = this.state.revealed;
+    let newRevealedState = !initialState;
+    this.animateToggle(newRevealedState)
+    const id = this.props.id;
     if (id && "compressed-answers" !== id) {
-      serviceApi.updateRound(roundId, id, newRevealed, (_) => {
-      }, (_) => setRevealed(initialState))
+      serviceApi.updateRound(this.props.roundId, id, newRevealedState, (_) => {
+      }, (_) => this.animateToggle(initialState))
     }
   }
 
-  const nodeRef = useRef(null);
+  animateToggle = (newRevealedState) => {
+    this.setState({
+      animateRevealed: newRevealedState
+    })
+  }
 
-  return (
-      <div className="ListItem" key={id} onClick={animateToggle}>
-        <header
-            className={"ListItem-header " + (hostView ? hostViewClass : "") + " " + (revealed ? isRevealedClass : "")}>
-          <CSSTransition nodeRef={nodeRef} in={animateRevealed} timeout={300}
-                         classNames={isRevealedClass} onEntering={toggleState} onExited={toggleState}>
-            <div ref={nodeRef}>
-              {coverText && !hostView && !revealed &&
-                  <div className="ListItem-number">
-                    <div className="spacer" />
-                    <div className="spacer" />
-                    <div>{coverText}</div>
-                    <div className="spacer" />
-                    <div className="spacer" />
-                  </div>
-              }
+  toggleRevealed = () => {
+    let newRevealed = this.state.animateRevealed;
+    this.setState({
+      revealed: newRevealed
+    })
 
-              {text &&
-                  <div
-                      className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (revealed ? isRevealedClass : "")}>
-                    <div className="ListItem-text">
-                      {coverText &&
-                          <div className="ListItem-number">
-                            <div className="spacer" />
-                            <div>{coverText}</div>
-                            <div className="spacer" />
-                          </div>
-                      }
+  }
+
+  render() {
+    const { id, hostView, coverText, text, points } = this.props
+    const { revealed, animateRevealed } = this.state
+
+    return (
+        <div className="ListItem" key={id} onClick={this.triggerToggleRevealed}>
+          <header
+              className={"ListItem-header " + (hostView ? hostViewClass : "") + " " + (revealed ? isRevealedClass : "")}>
+            <CSSTransition nodeRef={this.nodeRef} in={animateRevealed} timeout={300}
+                           classNames={isRevealedClass} onEntering={this.toggleRevealed} onExited={this.toggleRevealed}>
+              <div ref={this.nodeRef}>
+                {coverText && !hostView && !revealed &&
+                    <div className="ListItem-number">
                       <div className="spacer" />
-                      {text}
+                      <div className="spacer" />
+                      <div>{coverText}</div>
+                      <div className="spacer" />
                       <div className="spacer" />
                     </div>
-                    {points &&
-                        <div className="ListItem-points">
-                          {points}
-                        </div>
-                    }
-                  </div>
-              }
-            </div>
-          </CSSTransition>
-        </header>
-      </div>
-  );
+                }
+
+                {text &&
+                    <div
+                        className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (revealed ? isRevealedClass : "")}>
+                      <div className="ListItem-text">
+                        {coverText &&
+                            <div className="ListItem-number">
+                              <div className="spacer" />
+                              <div>{coverText}</div>
+                              <div className="spacer" />
+                            </div>
+                        }
+                        <div className="spacer" />
+                        {text}
+                        <div className="spacer" />
+                      </div>
+                      {points &&
+                          <div className="ListItem-points">
+                            {points}
+                          </div>
+                      }
+                    </div>
+                }
+              </div>
+            </CSSTransition>
+          </header>
+        </div>
+    );
+  }
 }
 
 export default ListItem;

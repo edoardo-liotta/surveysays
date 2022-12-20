@@ -75,6 +75,10 @@ function AppView(hostView, roundId) {
         if ("need-update" === message) {
           setFetching(true)
         }
+        if (message && message.startsWith("set-revealed ")) {
+          const split = message.split(" ")
+          playground.current.animateRevealed(split[1], split[2] === "true")
+        }
         if (message && message.startsWith("set-player ")) {
           playground.current.setActivePlayer(message.slice(11))
         }
