@@ -17,7 +17,7 @@ function Playground(props) {
         <div className="spacer" />
         <QuestionBox hostView={hostView} isDiscovered={true} text={"Qual è la caratteristica più bella di Cloe?"} />
         <div className="spacer" />
-        <ListGrid />
+        <ListGrid hostView={hostView} />
       </div>
   );
 }
