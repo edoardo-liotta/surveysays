@@ -86,6 +86,9 @@ function AppView(hostView, roundId) {
         if ("need-update" === message) {
           setFetching(true)
         }
+        if ("show-strike" === message) {
+          playground.current.showStrike()
+        }
         if (message && message.startsWith("set-revealed ")) {
           const split = message.split(" ")
           playground.current.animateRevealed(split[1], split[2] === "true")

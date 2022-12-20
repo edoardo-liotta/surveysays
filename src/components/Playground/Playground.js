@@ -95,6 +95,13 @@ class Playground extends Component {
     this.setState({ players: newPlayers })
   }
 
+  showStrike = () => {
+    this.setState({ isShowingStrike: true })
+    setTimeout(() => {
+      this.setState({ isShowingStrike: false });
+    }, 3000);
+  }
+
   toggleQuestionItemRevealed = (stateChange) => {
     this.setState({
       questionItem: {
@@ -123,10 +130,8 @@ class Playground extends Component {
   }
 
   triggerStrike = () => {
-    this.setState({ isShowingStrike: true })
-    setTimeout(() => {
-      this.setState({ isShowingStrike: false });
-    }, 3000);
+    this.showStrike()
+    this.serviceApi.showStrike()
   }
 
   triggerToggleQuestionItemRevealed = () => {
@@ -199,7 +204,7 @@ class Playground extends Component {
             <PlayerGrid hostView={hostView} onManualEditScore={this.onManualEditScore}
                         players={players} setActivePlayer={this.triggerSetActivePlayer} />
             <div className={"strike-container " + (isShowingStrike ? "active" : "")}>
-              <Cancel htmlColor={"red"} sx={{ fontSize: 400 }} />
+              <Cancel htmlColor={"red"} fontSize={"inherit"} />
             </div>
             {hostView &&
                 <HostActions scoreAdditionMode={scoreAdditionMode} onTriggerStrike={this.triggerStrike}

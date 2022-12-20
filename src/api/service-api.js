@@ -62,6 +62,17 @@ class ServiceApi {
         .then(thenCallback)
         .catch(catchCallback)
   }
+
+  showStrike = (thenCallback, catchCallback) => {
+    fetch(`${(getServiceUrl())}/show-strike`, {
+      method: "POST",
+      headers: {
+        "ngrok-skip-browser-warning": "any"
+      }
+    })
+        .then(thenCallback)
+        .catch(catchCallback)
+  }
 }
 
 export default ServiceApi;

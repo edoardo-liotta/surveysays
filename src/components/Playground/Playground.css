@@ -12,13 +12,17 @@
 }
 
 .Playground .strike-container {
-    left: 50%;
-    margin-top: -20vh;
-    margin-left: -22vw;
-    position: absolute;
-    top: 50%;
-    z-index: 1;
+    background-color: black;
     display: none;
+    font-size: 24vmin;
+    height: 24vmin;
+    left: calc(50vw - 12vmin);
+    #padding: 3vh 3vw 0 3vw;
+    position: absolute;
+    top: calc(50vh - 12vmin);
+    vertical-align: middle;
+    width: 24vmin;
+    z-index: 1;
 }
 
 .Playground .strike-container.active {
