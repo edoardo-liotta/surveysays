@@ -24,12 +24,7 @@ class Playground extends Component {
     this.state = {
       answerItems: addRefs((props.roundInfo && props.roundInfo.items) || []),
       questionItem: (props.roundInfo && props.roundInfo.questionItem) || {},
-      players: [{
-        name: "Player 1",
-        active: false,
-        score: 0,
-        ref: createRef(),
-      }, { name: "Player 2", active: false, score: 0, ref: createRef() }],
+      players: addRefs((props.roundInfo && props.roundInfo.players) || []),
       scoreAdditionMode: ScoreAdditionMode.ADD
     }
   }
