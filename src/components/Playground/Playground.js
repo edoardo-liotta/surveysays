@@ -13,6 +13,11 @@ function addRefs(answers) {
   })
   return newAnswers
 }
+
+const ScoreAdditionMode = {
+  ADD: "add"
+}
+
 class Playground extends Component {
   constructor(props) {
     super(props);
@@ -23,8 +28,9 @@ class Playground extends Component {
         name: "Player 1",
         active: false,
         score: 0,
-        ref: createRef()
-      }, { name: "Player 2", active: false, score: 0, ref: createRef() }]
+        ref: createRef(),
+      }, { name: "Player 2", active: false, score: 0, ref: createRef() }],
+      scoreAdditionMode: ScoreAdditionMode.ADD
     }
   }
 
@@ -86,6 +92,24 @@ class Playground extends Component {
     }] : this.state.answerItems
   }
 
+  onItemReveal = (itemId, newState) => {
+    const item = this.state.answerItems.find(x => itemId === x.id)
+    if (newState === true && item && item.points) {
+      this.updateScore(item.points)
+    }
+  }
+
+  updateScore = (pointsToAdd) => {
+    const activePlayer = this.state.players.find(x => x.active === true);
+    if (activePlayer) {
+      if (ScoreAdditionMode.ADD === this.state.scoreAdditionMode) {
+        const current = activePlayer.ref.current;
+        const score = current.state.score + pointsToAdd
+        current.setScore(score)
+      }
+    }
+  }
+
   render() {
     const { hostView, roundId } = this.props
     const { questionItem, players } = this.state
@@ -101,7 +125,7 @@ class Playground extends Component {
                        item={questionItem} onToggle={this.triggerToggleQuestionItemRevealed} />
           <div className="spacer" />
           <ListGrid hostView={hostView} roundId={roundId}
-                    items={this.answerItems()} />
+                    items={this.answerItems()} onToggleReveal={this.onItemReveal} />
           <div className="spacer" />
           <PlayerGrid
               players={players} setActivePlayer={this.triggerSetActivePlayer} />

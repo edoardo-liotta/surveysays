@@ -40,7 +40,7 @@ class ListItem extends Component {
     this.setState({
       revealed: newRevealed
     })
-
+    if (this.props.onToggleReveal) this.props.onToggleReveal(this.props.id, newRevealed)
   }
 
   render() {
