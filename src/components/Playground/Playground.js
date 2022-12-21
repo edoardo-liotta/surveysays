@@ -7,6 +7,7 @@ import { Component, createRef, Fragment } from 'react';
 import ServiceApi from '../../api/service-api';
 import HostActions from './HostActions';
 import { Cancel } from '@mui/icons-material';
+import { playBuzz } from '../../api/audio-api';
 
 function addRefs(answers) {
   const newAnswers = [...answers]
@@ -97,6 +98,7 @@ class Playground extends Component {
 
   showStrike = () => {
     this.setState({ isShowingStrike: true })
+    if (this.props.hostView !== true) playBuzz()
     setTimeout(() => {
       this.setState({ isShowingStrike: false });
     }, 3000);

@@ -3,6 +3,7 @@ import '../common.css';
 import { Component, createRef } from 'react';
 import ServiceApi from '../../api/service-api';
 import { CSSTransition } from 'react-transition-group';
+import { playDing } from '../../api/audio-api';
 
 const hostViewClass = "host-view"
 const isRevealedClass = "is-revealed"
@@ -33,6 +34,9 @@ class ListItem extends Component {
     this.setState({
       animateRevealed: newRevealedState
     })
+    if (newRevealedState === true && this.props.hostView !== true) {
+      playDing()
+    }
   }
 
   toggleRevealed = () => {
