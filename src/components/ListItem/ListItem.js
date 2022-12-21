@@ -70,10 +70,13 @@ class ListItem extends Component {
 
                 {text &&
                     <div
-                        className={"ListItem-answer " + (hostView ? hostViewClass : "") + " " + (revealed ? isRevealedClass : "")}>
-                      <div className="ListItem-text">
+                        className={"ListItem-answer "
+                            + (hostView ? hostViewClass : "") + " "
+                            + (revealed ? isRevealedClass : "")}>
+                      <div className={"ListItem-text "
+                          + (!hostView && text.length > 15 ? "smaller" : "")}>
                         {coverText &&
-                            <div className="ListItem-number">
+                            <div className={"ListItem-number " + (!hostView && coverText.length > 1 ? "smaller" : "")}>
                               <div className="spacer" />
                               <div>{coverText}</div>
                               <div className="spacer" />
