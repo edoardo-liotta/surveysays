@@ -271,6 +271,7 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
           </div>
           {hostView && (
             <HostActions
+              roundId={roundId}
               scoreAdditionMode={scoreAdditionMode}
               onTriggerStrike={this.triggerStrike}
               onToggle={() => {

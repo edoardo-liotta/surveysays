@@ -1,7 +1,15 @@
 import './Playground.css'
 import '../common.css'
-import { AppBar, Box, IconButton, Toolbar } from '@mui/material'
-import { Add, Cancel, Menu, SwipeVertical } from '@mui/icons-material'
+import {
+  AppBar,
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  IconButton,
+  Toolbar,
+} from '@mui/material'
+import { Add, Cancel, SwipeVertical } from '@mui/icons-material'
 import { ScoreAdditionMode } from './Playground'
 import React from 'react'
 
@@ -9,6 +17,7 @@ type HostActionsProps = {
   onToggle: () => void
   onTriggerStrike: () => void
   scoreAdditionMode: ScoreAdditionMode
+  roundId: string
 }
 function HostActions(props: HostActionsProps) {
   return (
@@ -24,9 +33,16 @@ function HostActions(props: HostActionsProps) {
             {props.scoreAdditionMode === 'steal' && <SwipeVertical />}
           </IconButton>
           <Box sx={{ flexGrow: 2 }} />
-          <IconButton color="inherit">
+          <Card sx={{ minWidth: '80px' }}>
+            <CardActionArea sx={{ padding: '0' }}>
+              <CardContent>
+                <div style={{ fontSize: 'large' }}>{props.roundId}</div>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+          {/*<IconButton color="inherit">
             <Menu />
-          </IconButton>
+          </IconButton>*/}
         </Toolbar>
       </AppBar>
     </div>
