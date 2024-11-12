@@ -55,7 +55,7 @@ const App = () => {
 
 const AppView = ({
   hostView,
-  roundId,
+  roundId: initialRoundId,
 }: {
   hostView: boolean
   roundId: string
@@ -65,6 +65,7 @@ const AppView = ({
     questionItem: { id: '', isRevealed: false, text: '' },
     items: [],
   })
+  const [roundId, setRoundId] = useState<string>(initialRoundId)
   const [roundHash, setRoundHash] = useState<string>('')
   const [fetching, setFetching] = useState<boolean>(false)
   const [socketConnection, setSocketConnection] = useState<
@@ -103,7 +104,8 @@ const AppView = ({
       socketConnection.onmessage = function (event) {
         console.log(event)
         const message = event.data
-        if ('need-update' === message) {
+        if (message && message.startsWith('need-update ')) {
+          setRoundId(message.slice(12))
           setFetching(true)
         }
         if ('show-strike' === message) {
