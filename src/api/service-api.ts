@@ -78,7 +78,7 @@ class ServiceApi {
 
   setActivePlayer = (
     roundId: string,
-    name: string,
+    name?: string,
     thenCallback?:
       | ((value: Response) => Response | PromiseLike<Response>)
       | null,
@@ -87,6 +87,26 @@ class ServiceApi {
     fetch(`${getServiceUrl()}/round/${roundId}/set-active-player`, {
       method: 'POST',
       body: JSON.stringify({ name }),
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'any',
+      },
+    })
+      .then(thenCallback)
+      .catch(catchCallback)
+  }
+
+  setScoreAdditionMode = (
+    roundId: string,
+    newMode: string,
+    thenCallback?:
+      | ((value: Response) => Response | PromiseLike<Response>)
+      | null,
+    catchCallback?: ((reason: any) => PromiseLike<never>) | null,
+  ) => {
+    fetch(`${getServiceUrl()}/round/${roundId}/set-score-addition-mode`, {
+      method: 'POST',
+      body: JSON.stringify({ mode: newMode }),
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': 'any',

@@ -27,7 +27,7 @@ function addRefs<T, R extends Referrable<T>>(answers: T[]): R[] {
 }
 
 const scoreAdditionModes = ['add', 'set', 'steal'] as const
-export type ScoreAdditionModeA = (typeof scoreAdditionModes)[number]
+export type ScoreAdditionMode = (typeof scoreAdditionModes)[number]
 
 type PlaygroundProps = React.ComponentPropsWithRef<any> & {
   hostView: boolean
@@ -39,7 +39,7 @@ type PlaygroundState = {
   answerItems: ReferrableRevealableItem[]
   questionItem: RevealableItem
   players: StatefulPlayer[]
-  scoreAdditionMode: ScoreAdditionModeA
+  scoreAdditionMode: ScoreAdditionMode
   isShowingStrike: boolean
 }
 
@@ -113,7 +113,7 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     }
   }
 
-  setActivePlayer = (activePlayerName: string) => {
+  setActivePlayer = (activePlayerName?: string) => {
     const newPlayers = [...this.state.players]
     newPlayers.forEach(player => {
       let newActive = activePlayerName === player.name
@@ -122,6 +122,10 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     })
 
     this.setState({ players: newPlayers })
+  }
+
+  setScoreAdditionMode = (newMode: ScoreAdditionMode) => {
+    this.setState({ scoreAdditionMode: newMode })
   }
 
   showStrike = () => {
@@ -149,7 +153,7 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     }
   }
 
-  triggerSetActivePlayer = (activePlayerName: string) => {
+  triggerSetActivePlayer = (activePlayerName?: string) => {
     const currentPlayers = this.state.players
     this.setActivePlayer(activePlayerName)
     this.serviceApi.setActivePlayer(
@@ -164,6 +168,10 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     )
   }
 
+  triggerSetScoreAdditionMode = (newMode: ScoreAdditionMode) => {
+    this.serviceApi.setScoreAdditionMode(this.props.roundId, newMode)
+  }
+
   triggerStrike = () => {
     this.showStrike()
     this.serviceApi.showStrike()
@@ -176,7 +184,7 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
   updateScore = (
     targetPlayerName: string,
     pointsToAdd: number,
-    scoreAdditionMode: ScoreAdditionModeA,
+    scoreAdditionMode: ScoreAdditionMode,
   ) => {
     const newPlayers = [...this.state.players]
     const targetPlayer = newPlayers.find(x => x.name === targetPlayerName)

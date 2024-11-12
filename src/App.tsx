@@ -116,6 +116,9 @@ const AppView = ({
         if (message && message.startsWith('set-player ')) {
           playground.current?.setActivePlayer(message.slice(11))
         }
+        if (message && message.startsWith('set-score-addition-mode ')) {
+          playground.current?.setScoreAdditionMode(message.slice(24))
+        }
       }
       socketConnection.onclose = function (event) {
         console.log(event)

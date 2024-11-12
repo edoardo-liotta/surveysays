@@ -2,13 +2,13 @@ import './Playground.css'
 import '../common.css'
 import { AppBar, Box, IconButton, Toolbar } from '@mui/material'
 import { Add, Cancel, Menu, SwipeVertical } from '@mui/icons-material'
-import { ScoreAdditionModeA } from './Playground'
+import { ScoreAdditionMode } from './Playground'
 import React from 'react'
 
 type HostActionsProps = {
   onToggle: () => void
   onTriggerStrike: () => void
-  scoreAdditionMode: ScoreAdditionModeA
+  scoreAdditionMode: ScoreAdditionMode
 }
 function HostActions(props: HostActionsProps) {
   return (
