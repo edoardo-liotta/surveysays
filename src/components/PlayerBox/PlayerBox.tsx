@@ -23,7 +23,7 @@ type PlayerBoxProps = {
   score: number
   hostView: boolean
   onManualEditScore: (name: string, score: number) => void
-  setActivePlayer: (name: string) => void
+  setActivePlayer: (name?: string) => void
 }
 
 type PlayerBoxState = {
@@ -82,8 +82,9 @@ class PlayerBox extends Component<PlayerBoxProps, PlayerBoxState> {
     const { name, hostView, setActivePlayer } = this.props
     const { editDialogOpen, isActive, score, targetScore } = this.state
 
-    function toggleState() {
-      isActive && setActivePlayer(name)
+    const toggleState = () => {
+      if (!isActive) setActivePlayer(name)
+      else setActivePlayer()
     }
 
     return (

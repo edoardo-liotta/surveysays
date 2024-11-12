@@ -7,7 +7,7 @@ import React from 'react'
 type PlayerGridProps = {
   hostView: boolean
   players: StatefulPlayer[]
-  setActivePlayer: (name: string) => void
+  setActivePlayer: (name?: string) => void
   onManualEditScore: (name: string, score: number) => void
 }
 

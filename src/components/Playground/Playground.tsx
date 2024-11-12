@@ -146,11 +146,14 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
   }
 
   toggleScoreAdditionMode = () => {
+    let newMode: ScoreAdditionMode
     if (this.state.scoreAdditionMode === 'add') {
-      this.setState({ scoreAdditionMode: 'steal' })
+      newMode = 'steal'
     } else {
-      this.setState({ scoreAdditionMode: 'add' })
+      newMode = 'add'
     }
+    this.setScoreAdditionMode(newMode)
+    this.triggerSetScoreAdditionMode(newMode)
   }
 
   triggerSetActivePlayer = (activePlayerName?: string) => {
