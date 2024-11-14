@@ -8,43 +8,87 @@ import {
   CardContent,
   IconButton,
   Toolbar,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
 } from '@mui/material'
 import { Add, Cancel, SwipeVertical } from '@mui/icons-material'
 import { ScoreAdditionMode } from './Playground'
-import React from 'react'
+import React, { useState } from 'react'
 
 type HostActionsProps = {
   onToggle: () => void
   onTriggerStrike: () => void
+  onChangeRoundId: (newRoundId: string) => void
   scoreAdditionMode: ScoreAdditionMode
   roundId: string
 }
-function HostActions(props: HostActionsProps) {
+
+const HostActions = ({
+  onChangeRoundId,
+  onToggle,
+  onTriggerStrike,
+  roundId,
+  scoreAdditionMode,
+}: HostActionsProps) => {
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const [newRoundId, setNewRoundId] = useState(roundId)
+
+  const handleEditDialogOpen = () => setEditDialogOpen(true)
+  const handleEditDialogClose = () => setEditDialogOpen(false)
+  const handleRoundIdChange = () => {
+    onChangeRoundId(newRoundId)
+    handleEditDialogClose()
+  }
+
   return (
     <div className={'HostActions'}>
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>
-          <IconButton color="inherit" onClick={props.onTriggerStrike}>
+          <IconButton color="inherit" onClick={onTriggerStrike}>
             <Cancel htmlColor={'darkred'} />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton color="inherit" onClick={props.onToggle}>
-            {props.scoreAdditionMode === 'add' && <Add />}
-            {props.scoreAdditionMode === 'steal' && <SwipeVertical />}
+          <IconButton color="inherit" onClick={onToggle}>
+            {scoreAdditionMode === 'add' && <Add />}
+            {scoreAdditionMode === 'steal' && <SwipeVertical />}
           </IconButton>
+          <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 2 }} />
           <Card sx={{ minWidth: '80px' }}>
-            <CardActionArea sx={{ padding: '0' }}>
+            <CardActionArea
+              sx={{ padding: '0' }}
+              onClick={handleEditDialogOpen}
+            >
               <CardContent>
-                <div style={{ fontSize: 'large' }}>{props.roundId}</div>
+                <div style={{ fontSize: 'large' }}>{roundId}</div>
               </CardContent>
             </CardActionArea>
           </Card>
-          {/*<IconButton color="inherit">
-            <Menu />
-          </IconButton>*/}
         </Toolbar>
       </AppBar>
+      <Dialog open={editDialogOpen} onClose={handleEditDialogClose}>
+        <DialogTitle>Cambia round</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            id="edit-roundId"
+            label="Round ID"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={newRoundId}
+            onChange={e => setNewRoundId(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleEditDialogClose}>Annulla</Button>
+          <Button onClick={handleRoundIdChange}>Conferma</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }

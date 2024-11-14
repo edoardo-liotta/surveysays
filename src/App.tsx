@@ -73,6 +73,13 @@ const AppView = ({
   >()
   const playground = useRef<Playground>(null)
 
+  const updateRoundId = (newRoundId: string) => {
+    setRoundId(newRoundId)
+    setFetching(true)
+    if (hostView) {
+      serviceApi.forceRefresh(newRoundId)
+    }
+  }
   useEffect(() => {
     console.log(roundInfo)
     if (hostView && !fetching) {
@@ -105,8 +112,7 @@ const AppView = ({
         console.log(event)
         const message = event.data
         if (message && message.startsWith('need-update ')) {
-          setRoundId(message.slice(12))
-          setFetching(true)
+          updateRoundId(message.slice(12))
         }
         if ('show-strike' === message) {
           playground.current?.showStrike()
@@ -139,11 +145,12 @@ const AppView = ({
     <div className="App">
       <header className="App-header">
         <Playground
-          key={roundHash}
+          key={`${roundId} ${roundHash}`}
           ref={playground}
           hostView={hostView}
           roundId={roundId}
           roundInfo={roundInfo}
+          updateRoundId={updateRoundId}
         />
       </header>
     </div>

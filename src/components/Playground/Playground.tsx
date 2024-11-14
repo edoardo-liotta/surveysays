@@ -33,6 +33,7 @@ type PlaygroundProps = React.ComponentPropsWithRef<any> & {
   hostView: boolean
   roundId: string
   roundInfo: RoundInfo
+  updateRoundId?: (newRoundId: string) => void
 }
 
 type PlaygroundState = {
@@ -233,6 +234,10 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     }
   }
 
+  updateRoundId = (newRoundId: string) => {
+    this.props.updateRoundId && this.props.updateRoundId(newRoundId)
+  }
+
   render() {
     const { hostView, roundId } = this.props
     const { isShowingStrike, players, questionItem, scoreAdditionMode } =
@@ -277,6 +282,7 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
               onToggle={() => {
                 this.toggleScoreAdditionMode()
               }}
+              onChangeRoundId={this.updateRoundId}
             />
           )}
         </Fragment>
