@@ -30,7 +30,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
@@ -54,6 +56,9 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^6.2.0"
+    "@vitest/coverage-c8": "^0.33.0",
+    "@vitest/ui": "^2.1.5",
+    "gh-pages": "^6.2.0",
+    "vitest": "^2.1.5"
   }
 }
