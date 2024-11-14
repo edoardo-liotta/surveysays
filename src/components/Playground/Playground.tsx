@@ -15,6 +15,7 @@ import {
 import { StatefulPlayer } from '../../domain/player'
 import { Referrable } from '../../domain/referrable'
 import { RoundInfo } from '../../domain/round-info'
+import { updatePlayers } from './UpdatePlayers'
 
 function addRefs<T, R extends Referrable<T>>(answers: T[]): R[] {
   const newAnswers = [...answers]
@@ -84,10 +85,6 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
       : this.state.answerItems
   }
 
-  isAllAnswerItemsRevealed = () => {
-    return this.state.answerItems.every(x => x.isRevealed)
-  }
-
   onItemReveal = (itemId: string, newState: boolean) => {
     const newAnswerItems = [...this.state.answerItems]
     const item = newAnswerItems.find(x => itemId === x.id)
@@ -98,8 +95,10 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
         const activePlayer = this.state.players.find(x => x.active)
         if (activePlayer) {
           this.updateScore(
+            this.state.players,
             activePlayer.name,
             item.points,
+            this.state.answerItems,
             this.state.scoreAdditionMode,
           )
         }
@@ -108,7 +107,13 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
   }
 
   onManualEditScore = (targetPlayerName: string, newScore: number) => {
-    this.updateScore(targetPlayerName, newScore, 'set')
+    this.updateScore(
+      this.state.players,
+      targetPlayerName,
+      newScore,
+      this.state.answerItems,
+      'set',
+    )
     if (this.props.hostView) {
       this.serviceApi.forceRefresh(this.props.roundId)
     }
@@ -186,48 +191,29 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
   }
 
   updateScore = (
-    targetPlayerName: string,
-    pointsToAdd: number,
+    players: StatefulPlayer[],
+    playerName: string,
+    scoreValue: number,
+    answerItems: RevealableItem[],
     scoreAdditionMode: ScoreAdditionMode,
   ) => {
-    const newPlayers = [...this.state.players]
-    const targetPlayer = newPlayers.find(x => x.name === targetPlayerName)
+    const newPlayers = updatePlayers(
+      playerName,
+      scoreValue,
+      players,
+      scoreAdditionMode,
+      answerItems,
+    )
 
-    const performSteal = (targetPlayer: StatefulPlayer) => {
-      let scoreToSteal = 0
-      newPlayers.forEach(x => {
-        if (x.name !== targetPlayerName) {
-          scoreToSteal += x.score
-          x.ref.current?.setScore(0)
-          x.score = 0
-        }
-      })
-
-      return targetPlayer.score + pointsToAdd + scoreToSteal
-    }
-
-    if (targetPlayer) {
-      let newFinalScore = targetPlayer.score
-      if ('add' === scoreAdditionMode) {
-        if (this.isAllAnswerItemsRevealed()) {
-          newFinalScore = performSteal(targetPlayer)
-        } else {
-          newFinalScore = targetPlayer.score + pointsToAdd
-        }
-      }
-      if ('set' === scoreAdditionMode) {
-        newFinalScore = pointsToAdd
-      }
-      if ('steal' === scoreAdditionMode) {
-        pointsToAdd = 0
-        newFinalScore = performSteal(targetPlayer)
-      }
-
-      targetPlayer.ref.current?.setScore(newFinalScore)
-      targetPlayer.score = newFinalScore
-    }
-
-    this.setState({ players: newPlayers })
+    this.setState({
+      players: players.map(player => ({
+        ...player,
+        ...newPlayers.find(x => x.name === player.name),
+      })),
+    })
+    players.forEach(player => {
+      player.ref.current?.setScore(player.score)
+    })
 
     if (this.props.hostView) {
       this.serviceApi.updateScores(this.props.roundId, newPlayers)
