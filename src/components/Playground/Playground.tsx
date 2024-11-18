@@ -12,10 +12,9 @@ import {
   ReferrableRevealableItem,
   RevealableItem,
 } from '../../domain/RevealableItem'
-import { StatefulPlayer } from '../../domain/player'
+import { Player, StatefulPlayer } from '../../domain/player'
 import { Referrable } from '../../domain/referrable'
 import { RoundInfo } from '../../domain/round-info'
-import { updatePlayers } from './UpdatePlayers'
 
 function addRefs<T, R extends Referrable<T>>(answers: T[]): R[] {
   const newAnswers = [...answers]
@@ -34,6 +33,13 @@ type PlaygroundProps = React.ComponentPropsWithRef<any> & {
   hostView: boolean
   roundId: string
   roundInfo: RoundInfo
+  updateScoreFn: (
+    playerName: string,
+    scoreValue: number,
+    players: Player[],
+    scoreAdditionMode: string,
+    answerItems: RevealableItem[],
+  ) => Player[]
   updateRoundId?: (newRoundId: string) => void
 }
 
@@ -43,6 +49,13 @@ type PlaygroundState = {
   players: StatefulPlayer[]
   scoreAdditionMode: ScoreAdditionMode
   isShowingStrike: boolean
+  updateScoreFn: (
+    playerName: string,
+    scoreValue: number,
+    players: Player[],
+    scoreAdditionMode: string,
+    answerItems: RevealableItem[],
+  ) => Player[]
 }
 
 class Playground extends Component<PlaygroundProps, PlaygroundState> {
@@ -54,6 +67,7 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
       players: addRefs((props.roundInfo && props.roundInfo.players) || []),
       scoreAdditionMode: 'add',
       isShowingStrike: false,
+      updateScoreFn: props.updateScoreFn,
     }
   }
 
@@ -197,21 +211,22 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     answerItems: RevealableItem[],
     scoreAdditionMode: ScoreAdditionMode,
   ) => {
-    const newPlayers = updatePlayers(
+    const newPlayers = (this.props as PlaygroundProps).updateScoreFn(
       playerName,
       scoreValue,
       players,
       scoreAdditionMode,
       answerItems,
-    )
+    ) as Player[]
 
+    const newStatefulPlayers = players.map(player => ({
+      ...player,
+      ...newPlayers.find(x => x.name === player.name),
+    })) as StatefulPlayer[]
     this.setState({
-      players: players.map(player => ({
-        ...player,
-        ...newPlayers.find(x => x.name === player.name),
-      })),
+      players: newStatefulPlayers,
     })
-    players.forEach(player => {
+    newStatefulPlayers.forEach(player => {
       player.ref.current?.setScore(player.score)
     })
 

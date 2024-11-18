@@ -4,6 +4,7 @@ import React from 'react'
 import PlayerBox from '../PlayerBox/PlayerBox'
 import { RevealableItem } from '../../domain/RevealableItem'
 import { vi } from 'vitest'
+import { Player } from '../../domain/player'
 
 test('renders covered list item', () => {
   render(
@@ -46,6 +47,15 @@ test('update score triggers setters', () => {
       players: players,
       questionItem: { id: '1', text: '', isRevealed: false },
     },
+    updateScoreFn: (
+      _playerName: string,
+      _scoreValue: number,
+      players: Player[],
+      _scoreAdditionMode: string,
+      _answerItems: RevealableItem[],
+    ) => {
+      return players.map(x => ({ ...x, score: 100 }))
+    },
   })
 
   a.updateScore(
@@ -59,6 +69,6 @@ test('update score triggers setters', () => {
     'add',
   )
 
-  expect(scoreA).toHaveBeenCalledWith(2)
-  expect(scoreB).toHaveBeenCalledWith(1)
+  expect(scoreA).toHaveBeenCalledWith(100)
+  expect(scoreB).toHaveBeenCalledWith(100)
 })
