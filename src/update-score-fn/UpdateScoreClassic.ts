@@ -1,7 +1,7 @@
-import { Player } from '../../domain/player'
-import { RevealableItem } from '../../domain/RevealableItem'
+import { Player } from '../domain/player'
+import { RevealableItem } from '../domain/RevealableItem'
 
-export const updatePlayers = (
+export const updateScoreClassic = (
   playerName: string,
   scoreValue: number,
   players: Player[],

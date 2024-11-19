@@ -2,7 +2,7 @@ import ServiceApi from './api/service-api'
 import React, { useEffect, useRef, useState } from 'react'
 import { RoundInfo } from './domain/round-info'
 import Playground from './components/Playground/Playground'
-import { updatePlayers } from './components/Playground/UpdatePlayers'
+import { updateScoreClassic } from './update-score-fn/UpdateScoreClassic'
 
 const serviceApi = new ServiceApi()
 const AppView = ({
@@ -102,7 +102,7 @@ const AppView = ({
           hostView={hostView}
           roundId={roundId}
           roundInfo={roundInfo}
-          updateScoreFn={updatePlayers}
+          updateScoreFn={updateScoreClassic}
           updateRoundId={updateRoundId}
         />
       </header>

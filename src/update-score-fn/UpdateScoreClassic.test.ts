@@ -1,9 +1,9 @@
 import { expect } from 'vitest'
-import { updatePlayers } from './UpdatePlayers'
-import { RevealableItem } from '../../domain/RevealableItem'
+import { updateScoreClassic } from './UpdateScoreClassic'
+import { RevealableItem } from '../domain/RevealableItem'
 
 test('Add mode adds score and does not affect other score when some answers are not revealed yet', () => {
-  const result = updatePlayers(
+  const result = updateScoreClassic(
     'A',
     1,
     [
@@ -24,7 +24,7 @@ test('Add mode adds score and does not affect other score when some answers are 
 })
 
 test('Add mode adds score and steals other score when all answers are revealed', () => {
-  const result = updatePlayers(
+  const result = updateScoreClassic(
     'A',
     1,
     [
@@ -45,7 +45,7 @@ test('Add mode adds score and steals other score when all answers are revealed',
 })
 
 test('Steal mode steals score from other players', () => {
-  const result = updatePlayers(
+  const result = updateScoreClassic(
     'A',
     1,
     [
@@ -66,7 +66,7 @@ test('Steal mode steals score from other players', () => {
 })
 
 test('Set mode sets score to the given value', () => {
-  const result = updatePlayers(
+  const result = updateScoreClassic(
     'A',
     1,
     [
