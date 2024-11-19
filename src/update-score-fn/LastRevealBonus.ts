@@ -1,5 +1,6 @@
 import { Player } from '../domain/player'
 import { RevealableItem } from '../domain/RevealableItem'
+import { isAllAnswerItemsRevealed } from './IsAllAnswerItemsRevealed'
 
 export const lastRevealBonus = (
   playerName: string,
@@ -8,10 +9,6 @@ export const lastRevealBonus = (
   scoreAdditionMode: string,
   answerItems: RevealableItem[],
 ) => {
-  const isAllAnswerItemsRevealed = (answerItems: RevealableItem[]) => {
-    return answerItems.every(x => x.isRevealed)
-  }
-
   const newPlayers = [...players].reduce(
     (acc, p) => {
       acc[p.name] = p

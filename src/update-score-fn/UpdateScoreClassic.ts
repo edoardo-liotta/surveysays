@@ -1,5 +1,6 @@
 import { Player } from '../domain/player'
 import { RevealableItem } from '../domain/RevealableItem'
+import { isAllAnswerItemsRevealed } from './IsAllAnswerItemsRevealed'
 
 export const updateScoreClassic = (
   playerName: string,
@@ -21,10 +22,6 @@ export const updateScoreClassic = (
     })
 
     return targetPlayer.score + scoreValue + scoreToSteal
-  }
-
-  const isAllAnswerItemsRevealed = (answerItems: RevealableItem[]) => {
-    return answerItems.every(x => x.isRevealed)
   }
 
   const newPlayers = [...players].reduce(
