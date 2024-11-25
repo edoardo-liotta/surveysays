@@ -81,6 +81,12 @@ const AppView = ({
           console.log('Setting score addition mode to ' + newMode)
           playground.current?.setScoreAdditionMode(newMode)
         }
+        if (message && message.startsWith('set-strikes ')) {
+          const strikes = message.slice(12).split(' ')[0]
+          const name = message.slice(14)
+          console.log('Setting strikes to ' + strikes + ' for ' + name)
+          playground.current?.setPlayerStrikes(name, parseInt(strikes))
+        }
       }
       socketConnection.onclose = function (event) {
         console.log(event)

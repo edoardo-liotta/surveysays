@@ -96,6 +96,27 @@ class ServiceApi {
       .catch(catchCallback)
   }
 
+  setPlayerStrikes = (
+    roundId: string,
+    name: string,
+    strikes: number,
+    thenCallback?:
+      | ((value: Response) => Response | PromiseLike<Response>)
+      | null,
+    catchCallback?: ((reason: any) => PromiseLike<never>) | null,
+  ) => {
+    fetch(`${getServiceUrl()}/round/${roundId}/set-player-strikes`, {
+      method: 'POST',
+      body: JSON.stringify({ name, strikes }),
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'any',
+      },
+    })
+      .then(thenCallback)
+      .catch(catchCallback)
+  }
+
   setScoreAdditionMode = (
     roundId: string,
     newMode: string,

@@ -133,15 +133,60 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     }
   }
 
+  onSetActivePlayer = (activePlayerName?: string) => {
+    this.setActivePlayer(activePlayerName)
+
+    if (this.props.hostView) {
+      this.serviceApi.setActivePlayer(
+        this.props.roundId,
+        activePlayerName,
+        _ => _,
+        () => {
+          const activePlayer = this.state.players.find(x => x.active)
+          activePlayer && this.setActivePlayer(activePlayer.name)
+          return Promise.reject('Failed to set active player')
+        },
+      )
+    }
+  }
+
+  onSetPlayerStrikes = (targetPlayerName: string, newStrikes: number) => {
+    this.setPlayerStrikes(targetPlayerName, newStrikes)
+
+    if (this.props.hostView) {
+      this.serviceApi.setPlayerStrikes(
+        this.props.roundId,
+        targetPlayerName,
+        newStrikes,
+        _ => _,
+        () => {
+          const targetPlayer = this.state.players.find(
+            x => x.name === targetPlayerName,
+          )
+          targetPlayer &&
+            this.setPlayerStrikes(targetPlayer.name, targetPlayer.strikes)
+          return Promise.reject('Failed to set player strikes')
+        },
+      )
+    }
+  }
+
   setActivePlayer = (activePlayerName?: string) => {
     const newPlayers = [...this.state.players]
     newPlayers.forEach(player => {
-      let newActive = activePlayerName === player.name
-      player.ref.current?.setActive(newActive)
-      player.active = newActive
+      player.active = activePlayerName === player.name
     })
 
     this.setState({ players: newPlayers })
+  }
+
+  setPlayerStrikes = (targetPlayerName: string, newStrikes: number) => {
+    const newPlayers = [...this.state.players]
+    const targetPlayer = newPlayers.find(x => x.name === targetPlayerName)
+    if (targetPlayer) {
+      targetPlayer.strikes = newStrikes
+      this.setState({ players: newPlayers })
+    }
   }
 
   setScoreAdditionMode = (newMode: ScoreAdditionMode) => {
@@ -174,21 +219,6 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     }
     this.setScoreAdditionMode(newMode)
     this.triggerSetScoreAdditionMode(newMode)
-  }
-
-  triggerSetActivePlayer = (activePlayerName?: string) => {
-    const currentPlayers = this.state.players
-    this.setActivePlayer(activePlayerName)
-    this.serviceApi.setActivePlayer(
-      this.props.roundId,
-      activePlayerName,
-      _ => _,
-      () => {
-        const activePlayer = currentPlayers.find(x => x.active)
-        activePlayer && this.setActivePlayer(activePlayer.name)
-        return Promise.reject('Failed to set active player')
-      },
-    )
   }
 
   triggerSetScoreAdditionMode = (newMode: ScoreAdditionMode) => {
@@ -268,7 +298,8 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
             hostView={hostView}
             onManualEditScore={this.onManualEditScore}
             players={players}
-            setActivePlayer={this.triggerSetActivePlayer}
+            setActivePlayer={this.onSetActivePlayer}
+            onSetStrikeCount={this.onSetPlayerStrikes}
           />
           <div
             className={'strike-container ' + (isShowingStrike ? 'active' : '')}

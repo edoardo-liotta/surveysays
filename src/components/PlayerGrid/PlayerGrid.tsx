@@ -9,6 +9,7 @@ type PlayerGridProps = {
   players: StatefulPlayer[]
   setActivePlayer: (name?: string) => void
   onManualEditScore: (name: string, score: number) => void
+  onSetStrikeCount: (name: string, count: number) => void
 }
 
 const PlayerGrid = ({
@@ -16,25 +17,24 @@ const PlayerGrid = ({
   onManualEditScore,
   players,
   setActivePlayer,
+  onSetStrikeCount,
 }: PlayerGridProps) => {
-  function playerBox(item: StatefulPlayer) {
-    return (
-      <PlayerBox
-        key={item.name}
-        ref={item.ref}
-        hostView={hostView}
-        active={item.active || false}
-        name={item.name || 'Unknown'}
-        score={item.score || 0}
-        setActivePlayer={setActivePlayer}
-        onManualEditScore={onManualEditScore}
-      />
-    )
-  }
-
   return (
     <div className={'PlayerGrid ' + (hostView ? 'host-view' : '')}>
-      {players && players.map(item => playerBox(item))}
+      {players &&
+        players.map(item => (
+          <PlayerBox
+            key={item.name}
+            hostView={hostView}
+            active={item.active || false}
+            name={item.name || 'Unknown'}
+            score={item.score || 0}
+            strikes={item.strikes || 0}
+            setActivePlayer={setActivePlayer}
+            onManualEditScore={onManualEditScore}
+            onSetStrikeCount={onSetStrikeCount!}
+          />
+        ))}
     </div>
   )
 }

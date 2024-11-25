@@ -12,7 +12,7 @@ import {
   IconButton,
   TextField,
 } from '@mui/material'
-import { Edit } from '@mui/icons-material'
+import { Cancel, Circle, Edit } from '@mui/icons-material'
 
 const hostViewClass = 'host-view'
 const isActiveClass = 'is-active'
@@ -24,10 +24,12 @@ type PlayerBoxProps = {
   hostView: boolean
   onManualEditScore: (name: string, score: number) => void
   setActivePlayer: (name?: string) => void
+  strikes: number
+  maxStrikes?: number
+  onSetStrikeCount: (name: string, count: number) => void
 }
 
 type PlayerBoxState = {
-  isActive: boolean
   score: number
   targetScore: number
   editDialogOpen: boolean
@@ -37,18 +39,11 @@ class PlayerBox extends Component<PlayerBoxProps, PlayerBoxState> {
   constructor(props: PlayerBoxProps) {
     super(props)
     this.state = {
-      isActive: props.active,
       score: props.score || 0,
       targetScore: props.score || 0,
       editDialogOpen: false,
       id: '' + Math.random(),
     }
-  }
-
-  setActive = (newActive: boolean) => {
-    this.setState({
-      isActive: newActive,
-    })
   }
 
   setScore = (newScore: number) => {
@@ -79,11 +74,11 @@ class PlayerBox extends Component<PlayerBoxProps, PlayerBoxState> {
   }
 
   render() {
-    const { name, hostView, setActivePlayer } = this.props
-    const { editDialogOpen, isActive, score, targetScore } = this.state
+    const { name, hostView, active, setActivePlayer } = this.props
+    const { editDialogOpen, score, targetScore } = this.state
 
     const toggleState = () => {
-      if (!isActive) setActivePlayer(name)
+      if (!active) setActivePlayer(name)
       else setActivePlayer()
     }
 
@@ -93,51 +88,90 @@ class PlayerBox extends Component<PlayerBoxProps, PlayerBoxState> {
           'PlayerBox ' +
           (hostView ? hostViewClass : '') +
           ' ' +
-          (this.state.isActive ? isActiveClass : '')
+          (active ? isActiveClass : '')
         }
       >
         <div className={'info'} onClick={toggleState}>
-          <span>{name}</span>
-          <br />
-          <span>
-            <CountUp
-              start={score}
-              end={targetScore}
-              onEnd={this.afterAnimateScore}
-            />
-          </span>
-        </div>
-        {hostView && (
-          <>
-            <div className={'edit'}>
-              <IconButton onClick={this.handleDialogClickOpen}>
-                <Edit htmlColor={'white'} />
-              </IconButton>
+          <div>{name}</div>
+          <div className={'score-box'}>
+            <div>
+              <CountUp
+                start={score}
+                end={targetScore}
+                onEnd={this.afterAnimateScore}
+              />
             </div>
-            <Dialog open={editDialogOpen} onClose={this.handleDialogClose}>
-              <DialogTitle>Modifica punteggio di {name}</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Inserisci il nuovo punteggio da assegnare
-                </DialogContentText>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id={this.state.id}
-                  label="Punteggio"
-                  type="number"
-                  fullWidth
-                  variant="standard"
-                  defaultValue={score}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.handleDialogClose}>Annulla</Button>
-                <Button onClick={this.triggerUpdateScore}>Conferma</Button>
-              </DialogActions>
-            </Dialog>
-          </>
-        )}
+            {hostView && (
+              <>
+                <div className={'edit'}>
+                  <IconButton
+                    onClick={this.handleDialogClickOpen}
+                    size={'small'}
+                  >
+                    <Edit htmlColor={'white'} />
+                  </IconButton>
+                </div>
+                <Dialog open={editDialogOpen} onClose={this.handleDialogClose}>
+                  <DialogTitle>Modifica punteggio di {name}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Inserisci il nuovo punteggio da assegnare
+                    </DialogContentText>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id={this.state.id}
+                      label="Punteggio"
+                      type="number"
+                      fullWidth
+                      variant="standard"
+                      defaultValue={score}
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={this.handleDialogClose}>Annulla</Button>
+                    <Button onClick={this.triggerUpdateScore}>Conferma</Button>
+                  </DialogActions>
+                </Dialog>
+              </>
+            )}
+          </div>
+        </div>
+        <div className={'strike-box'}>
+          {[...Array(this.props.maxStrikes ?? 3)].map((_e, i) => {
+            const id = `${this.props.name}_strike-button_${i + 1}`
+            const isInactive = this.props.strikes <= i
+            const isActive = !isInactive
+            return (
+              <IconButton
+                key={id}
+                id={id}
+                size={'small'}
+                onClick={() =>
+                  this.props.onSetStrikeCount &&
+                  this.props.onSetStrikeCount(this.props.name, i + 1)
+                }
+                className={isActive ? 'active' : ''}
+              >
+                <Cancel />
+              </IconButton>
+            )
+          })}
+          {hostView && (
+            <span className={'reset-button'}>
+              <IconButton
+                id={`${this.props.name}_strike-button_0`}
+                size={'small'}
+                onClick={() =>
+                  this.props.onSetStrikeCount &&
+                  this.props.onSetStrikeCount(this.props.name, 0)
+                }
+              >
+                <Circle htmlColor={'lightgray'} />
+              </IconButton>
+            </span>
+          )}
+        </div>
       </div>
     )
   }

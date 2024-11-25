@@ -4,7 +4,9 @@
     border: solid 4px whitesmoke;
     border-radius: 10px;
     display: flex;
-    justify-content: space-between;
+    gap: 50px;
+    flex-direction: row;
+    justify-content: center;
     padding: 10px;
     min-width: 35vmin;
     transition: ease-in-out 300ms;
@@ -15,7 +17,29 @@
 }
 
 .PlayerBox .info {
-    width: 100%
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.PlayerBox .info .score-box {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    flex-direction: row;
+}
+
+.PlayerBox .strike-box {
+    align-content: center;
+}
+
+.PlayerBox .strike-box button svg {
+    color: lightgray;
+    transition: color 700ms;
+}
+
+.PlayerBox .strike-box button.active svg {
+    color: red;
 }
 
 .PlayerBox.is-active {
