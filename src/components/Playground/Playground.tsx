@@ -198,6 +198,15 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     if (!this.props.hostView) playBuzz()
     setTimeout(() => {
       this.setState({ isShowingStrike: false })
+      if (this.props.hostView) {
+        const activePlayer = this.state.players.find(x => x.active)
+        if (activePlayer) {
+          this.onSetPlayerStrikes(
+            activePlayer!.name,
+            (activePlayer!.strikes ?? 0) + 1,
+          )
+        }
+      }
     }, 3000)
   }
 
