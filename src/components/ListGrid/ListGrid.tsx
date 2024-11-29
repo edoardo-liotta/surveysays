@@ -27,7 +27,7 @@ const ListGrid = ({
     if (item) {
       return (
         <ListItem
-          key={`listitem-${item.id}-i`}
+          key={`listitem-${item.id}-${i}`}
           ref={(item as ReferrableRevealableItem)?.ref}
           roundId={roundId}
           id={item.id}
