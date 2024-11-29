@@ -82,7 +82,7 @@ test('clicking strike button updates player strike count', () => {
 
   const { container } = render(
     <Playground
-      hostView={true}
+      hostView={false}
       roundId={'1'}
       roundInfo={{
         items: [
