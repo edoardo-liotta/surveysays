@@ -1,15 +1,18 @@
 .PlayerGrid {
     align-items: center;
-    bottom: 2vmin;
     display: flex;
     justify-content: center;
+}
+
+.PlayerGrid:not(.host-view) {
+    bottom: 2vmin;
     position: fixed;
 }
 
 .PlayerGrid.host-view {
-    bottom: 13vmin;
+    margin-bottom: 18vmin;
 }
 
 .PlayerBox:not(:last-of-type) {
-    margin-right: 5vmin;
+    margin-right: 10vmin;
 }

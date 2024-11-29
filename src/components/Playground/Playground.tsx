@@ -263,9 +263,6 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
     this.setState({
       players: newStatefulPlayers,
     })
-    newStatefulPlayers.forEach(player => {
-      player.ref.current?.setScore(player.score)
-    })
 
     if (this.props.hostView) {
       this.serviceApi.updateScores(this.props.roundId, newPlayers)

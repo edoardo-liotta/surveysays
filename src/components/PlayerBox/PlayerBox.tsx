@@ -30,8 +30,7 @@ type PlayerBoxProps = {
 }
 
 type PlayerBoxState = {
-  score: number
-  targetScore: number
+  previousScore: number
   editDialogOpen: boolean
   id: string
 }
@@ -39,19 +38,13 @@ class PlayerBox extends Component<PlayerBoxProps, PlayerBoxState> {
   constructor(props: PlayerBoxProps) {
     super(props)
     this.state = {
-      score: props.score || 0,
-      targetScore: props.score || 0,
+      previousScore: props.score || 0,
       editDialogOpen: false,
       id: '' + Math.random(),
     }
   }
-
-  setScore = (newScore: number) => {
-    this.setState({ targetScore: newScore })
-  }
-
   afterAnimateScore = () => {
-    this.setState({ score: this.state.targetScore })
+    this.setState({ previousScore: this.props.score })
   }
 
   handleDialogClickOpen = () => {
@@ -74,8 +67,8 @@ class PlayerBox extends Component<PlayerBoxProps, PlayerBoxState> {
   }
 
   render() {
-    const { name, hostView, active, setActivePlayer } = this.props
-    const { editDialogOpen, score, targetScore } = this.state
+    const { name, hostView, active, score, setActivePlayer } = this.props
+    const { editDialogOpen, previousScore } = this.state
 
     const toggleState = () => {
       if (!active) setActivePlayer(name)
@@ -96,8 +89,8 @@ class PlayerBox extends Component<PlayerBoxProps, PlayerBoxState> {
           <div className={'score-box'}>
             <div>
               <CountUp
-                start={score}
-                end={targetScore}
+                start={previousScore}
+                end={score}
                 onEnd={this.afterAnimateScore}
               />
             </div>

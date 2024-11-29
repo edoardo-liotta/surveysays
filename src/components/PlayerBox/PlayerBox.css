@@ -4,8 +4,8 @@
     border: solid 4px whitesmoke;
     border-radius: 10px;
     display: flex;
-    gap: 50px;
-    flex-direction: row;
+    gap: 10px;
+    flex-direction: column;
     justify-content: center;
     padding: 10px;
     min-width: 35vmin;
