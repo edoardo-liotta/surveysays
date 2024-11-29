@@ -1,8 +1,9 @@
 import { Player } from '../domain/player'
 import { RevealableItem } from '../domain/RevealableItem'
 import { isAllAnswerItemsRevealed } from './IsAllAnswerItemsRevealed'
+import { ScoringSystem, UpdateScoreFn } from './update-score-fn'
 
-export const lastRevealBonus = (
+const lastRevealBonus: UpdateScoreFn = (
   playerName: string,
   scoreValue: number,
   players: Player[],
@@ -34,4 +35,9 @@ export const lastRevealBonus = (
     }
   }
   return Object.values(newPlayers)
+}
+
+export const lastRevealBonusMode: ScoringSystem = {
+  updateScoreFn: lastRevealBonus,
+  allScoreAdditionModes: ['add'],
 }

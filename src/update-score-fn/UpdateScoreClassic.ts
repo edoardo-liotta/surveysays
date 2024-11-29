@@ -1,8 +1,9 @@
 import { Player } from '../domain/player'
 import { RevealableItem } from '../domain/RevealableItem'
 import { isAllAnswerItemsRevealed } from './IsAllAnswerItemsRevealed'
+import { UpdateScoreFn } from './update-score-fn'
 
-export const updateScoreClassic = (
+const updateScoreClassic: UpdateScoreFn = (
   playerName: string,
   scoreValue: number,
   players: Player[],
@@ -65,4 +66,9 @@ export const updateScoreClassic = (
     targetPlayer.score = newFinalScore
   }
   return Object.values(newPlayers)
+}
+
+export const updateScoreClassicMode = {
+  updateScoreFn: updateScoreClassic,
+  allScoreAdditionModes: ['add', 'steal'],
 }

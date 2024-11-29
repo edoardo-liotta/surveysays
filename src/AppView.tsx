@@ -1,8 +1,8 @@
 import ServiceApi from './api/service-api'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { RoundInfo } from './domain/round-info'
 import Playground from './components/Playground/Playground'
-import { lastRevealBonus } from './update-score-fn/LastRevealBonus'
+import { lastRevealBonusMode } from './update-score-fn/LastRevealBonus'
 
 const serviceApi = new ServiceApi()
 const AppView = ({
@@ -24,6 +24,8 @@ const AppView = ({
     WebSocket | undefined
   >()
   const playground = useRef<Playground>(null)
+
+  const scoringSystem = useMemo(() => lastRevealBonusMode, [])
 
   const updateRoundId = (newRoundId: string) => {
     setRoundId(newRoundId)
@@ -108,9 +110,9 @@ const AppView = ({
           hostView={hostView}
           roundId={roundId}
           roundInfo={roundInfo}
-          updateScoreFn={lastRevealBonus}
+          updateScoreFn={scoringSystem.updateScoreFn}
           updateRoundId={updateRoundId}
-          allScoreAdditionModes={['add']}
+          allScoreAdditionModes={scoringSystem.allScoreAdditionModes}
         />
       </header>
     </div>

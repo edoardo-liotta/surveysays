@@ -15,7 +15,7 @@ import {
 import { Player, StatefulPlayer } from '../../domain/player'
 import { Referrable } from '../../domain/referrable'
 import { RoundInfo } from '../../domain/round-info'
-import { ScoreAdditionMode } from '../../domain/score-addition-mode'
+import { ScoreAdditionMode } from '../../update-score-fn/score-addition-mode'
 
 function addRefs<T, R extends Referrable<T>>(answers: T[]): R[] {
   const newAnswers = [...answers]

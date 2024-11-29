@@ -17,7 +17,7 @@ import {
 } from '@mui/material'
 import { Add, Cancel, Edit, SwipeVertical } from '@mui/icons-material'
 import React, { useState } from 'react'
-import { ScoreAdditionMode } from '../../domain/score-addition-mode'
+import { ScoreAdditionMode } from '../../update-score-fn/score-addition-mode'
 
 type HostActionsProps = {
   onToggle: () => void
