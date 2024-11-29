@@ -4,7 +4,7 @@ import PlayerGrid from '../PlayerGrid/PlayerGrid'
 import QuestionBox from '../QuestionBox/QuestionBox'
 import ListGrid from '../ListGrid/ListGrid'
 import React, { Component, createRef, Fragment } from 'react'
-import ServiceApi from '../../api/service-api'
+import ServiceApi, { setScoreAdditionMode } from '../../api/service-api'
 import HostActions from './HostActions'
 import { Cancel } from '@mui/icons-material'
 import { playBuzz } from '../../api/audio-api'
@@ -15,6 +15,7 @@ import {
 import { Player, StatefulPlayer } from '../../domain/player'
 import { Referrable } from '../../domain/referrable'
 import { RoundInfo } from '../../domain/round-info'
+import { ScoreAdditionMode } from '../../domain/score-addition-mode'
 
 function addRefs<T, R extends Referrable<T>>(answers: T[]): R[] {
   const newAnswers = [...answers]
@@ -25,9 +26,6 @@ function addRefs<T, R extends Referrable<T>>(answers: T[]): R[] {
     } as unknown as R
   })
 }
-
-const scoreAdditionModes = ['add', 'set', 'steal'] as const
-export type ScoreAdditionMode = (typeof scoreAdditionModes)[number]
 
 type PlaygroundProps = React.ComponentPropsWithRef<any> & {
   hostView: boolean
@@ -40,6 +38,7 @@ type PlaygroundProps = React.ComponentPropsWithRef<any> & {
     scoreAdditionMode: string,
     answerItems: RevealableItem[],
   ) => Player[]
+  allScoreAdditionModes: ScoreAdditionMode[]
   updateRoundId?: (newRoundId: string) => void
 }
 
@@ -65,7 +64,7 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
       answerItems: addRefs((props.roundInfo && props.roundInfo.items) || []),
       questionItem: (props.roundInfo && props.roundInfo.questionItem) || {},
       players: addRefs((props.roundInfo && props.roundInfo.players) || []),
-      scoreAdditionMode: 'add',
+      scoreAdditionMode: props.allScoreAdditionModes[0],
       isShowingStrike: false,
       updateScoreFn: props.updateScoreFn,
     }
@@ -220,18 +219,17 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
   }
 
   toggleScoreAdditionMode = () => {
-    let newMode: ScoreAdditionMode
-    if (this.state.scoreAdditionMode === 'add') {
-      newMode = 'steal'
-    } else {
-      newMode = 'add'
-    }
+    const indexOf = this.props.allScoreAdditionModes.indexOf(
+      this.state.scoreAdditionMode,
+    ) as number
+    const next = (indexOf + 1) % this.props.allScoreAdditionModes.length
+    const newMode = this.props.allScoreAdditionModes[next]
     this.setScoreAdditionMode(newMode)
     this.triggerSetScoreAdditionMode(newMode)
   }
 
   triggerSetScoreAdditionMode = (newMode: ScoreAdditionMode) => {
-    this.serviceApi.setScoreAdditionMode(this.props.roundId, newMode)
+    setScoreAdditionMode(this.props.roundId, newMode)
   }
 
   triggerStrike = () => {

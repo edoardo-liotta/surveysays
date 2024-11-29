@@ -6,6 +6,7 @@ import { RevealableItem } from '../../domain/RevealableItem'
 import { vi } from 'vitest'
 import { Player, StatefulPlayer } from '../../domain/player'
 import '@testing-library/jest-dom'
+import * as serviceApi from '../../api/service-api'
 
 test('renders covered list item', () => {
   render(
@@ -17,6 +18,7 @@ test('renders covered list item', () => {
         players: [],
         questionItem: { id: '1', text: '', isRevealed: false },
       }}
+      allScoreAdditionModes={['add', 'steal']}
     />,
   )
   expect(true).toBeTruthy()
@@ -54,9 +56,8 @@ test('update score triggers setters', () => {
       players: Player[],
       _scoreAdditionMode: string,
       _answerItems: RevealableItem[],
-    ) => {
-      return players.map(x => ({ ...x, score: 100 }))
-    },
+    ) => players.map(x => ({ ...x, score: 100 })),
+    allScoreAdditionModes: ['add', 'steal'],
   })
 
   a.updateScore(
@@ -92,6 +93,7 @@ test('clicking strike button updates player strike count', () => {
         players: players,
         questionItem: { id: '1', text: '', isRevealed: false },
       }}
+      allScoreAdditionModes={['add', 'steal']}
     />,
   )
 
@@ -101,4 +103,32 @@ test('clicking strike button updates player strike count', () => {
   }
 
   expect(strikeButton).toHaveClass('active')
+})
+
+test('should rotate through all score addition modes when clicking on the score addition mode button', () => {
+  const mockServiceApi = vi
+    .spyOn(serviceApi, 'setScoreAdditionMode')
+    .mockImplementation(() => {})
+  const { container } = render(
+    <Playground
+      hostView={true}
+      roundId={'1'}
+      roundInfo={{
+        items: [],
+        players: [],
+        questionItem: { id: '1', text: '', isRevealed: false },
+      }}
+      allScoreAdditionModes={['add', 'steal', 'set']}
+    />,
+  )
+
+  const scoreAdditionModeButton = container.querySelector(
+    '#toggle-score-addition-mode-button',
+  )!
+  act(() => fireEvent.click(scoreAdditionModeButton))
+  expect(mockServiceApi).toHaveBeenCalledWith('1', 'steal')
+  act(() => fireEvent.click(scoreAdditionModeButton))
+  expect(mockServiceApi).toHaveBeenCalledWith('1', 'set')
+  act(() => fireEvent.click(scoreAdditionModeButton))
+  expect(mockServiceApi).toHaveBeenCalledWith('1', 'add')
 })

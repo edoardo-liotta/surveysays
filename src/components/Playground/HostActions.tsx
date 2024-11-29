@@ -3,21 +3,21 @@ import '../common.css'
 import {
   AppBar,
   Box,
+  Button,
   Card,
   CardActionArea,
   CardContent,
-  IconButton,
-  Toolbar,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
+  IconButton,
+  TextField,
+  Toolbar,
 } from '@mui/material'
-import { Add, Cancel, SwipeVertical } from '@mui/icons-material'
-import { ScoreAdditionMode } from './Playground'
+import { Add, Cancel, Edit, SwipeVertical } from '@mui/icons-material'
 import React, { useState } from 'react'
+import { ScoreAdditionMode } from '../../domain/score-addition-mode'
 
 type HostActionsProps = {
   onToggle: () => void
@@ -52,9 +52,14 @@ const HostActions = ({
             <Cancel htmlColor={'darkred'} />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton color="inherit" onClick={onToggle}>
+          <IconButton
+            id={'toggle-score-addition-mode-button'}
+            color="inherit"
+            onClick={onToggle}
+          >
             {scoreAdditionMode === 'add' && <Add />}
             {scoreAdditionMode === 'steal' && <SwipeVertical />}
+            {scoreAdditionMode === 'set' && <Edit />}
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 2 }} />

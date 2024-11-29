@@ -110,6 +110,7 @@ const AppView = ({
           roundInfo={roundInfo}
           updateScoreFn={lastRevealBonus}
           updateRoundId={updateRoundId}
+          allScoreAdditionModes={['add']}
         />
       </header>
     </div>
