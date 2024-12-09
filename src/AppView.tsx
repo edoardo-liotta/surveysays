@@ -13,6 +13,7 @@ const AppView = ({
   roundId: string
 }) => {
   const [roundInfo, setRoundInfo] = useState<RoundInfo>({
+    id: '',
     players: [],
     questionItem: { id: '', isRevealed: false, text: '' },
     items: [],

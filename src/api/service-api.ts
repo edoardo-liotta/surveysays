@@ -9,6 +9,13 @@ class ServiceApi {
     )
   }
 
+  getRounds = async () => {
+    const r = await fetch(`${getServiceUrl()}/rounds`, {
+      headers: { 'ngrok-skip-browser-warning': 'any' },
+    })
+    return await r.json()
+  }
+
   getRound = async (roundId: string) => {
     const r = await fetch(`${getServiceUrl()}/round/${roundId}`, {
       headers: { 'ngrok-skip-browser-warning': 'any' },

@@ -1,0 +1,28 @@
+.round-list-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.round-list-item:not(:last-of-type) {
+    border-bottom: 1px solid #a0a0a0;
+}
+
+.round-list-item .round-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.round-list-item .question {
+    overflow: hidden;
+    width: 100%;
+}
+
+.round-list-item .question .question-text {
+    overflow: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

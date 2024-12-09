@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import Configuration from './components/Configuration/Configuration'
 import { ConfigurationType, getRoundId } from './api/config-api'
 import { Host, Present } from './AppView'
-import PlayerGrid from './components/PlayerGrid/PlayerGrid'
 
 const Home = ({
   onSave,
@@ -46,26 +45,7 @@ const App = () => {
           path="/present"
           element={<Present key={'appview-present'} roundId={roundId} />}
         />
-        <Route
-          path={'/component'}
-          element={
-            <PlayerGrid
-              hostView={true}
-              onManualEditScore={() => {}}
-              setActivePlayer={() => {}}
-              onSetStrikeCount={() => {}}
-              players={[
-                {
-                  name: 'Player',
-                  score: 50,
-                  active: true,
-                  strikes: 1,
-                  ref: { current: null },
-                },
-              ]}
-            />
-          }
-        />
+        <Route path={'/component'} element={<div>Hello</div>} />
         <Route path="/" element={<Home onSave={onSaveConfig} />} />
       </Routes>
     </Router>

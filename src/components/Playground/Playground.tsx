@@ -319,6 +319,7 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
                 this.toggleScoreAdditionMode()
               }}
               onChangeRoundId={this.updateRoundId}
+              getRoundsFn={this.serviceApi.getRounds}
             />
           )}
         </Fragment>

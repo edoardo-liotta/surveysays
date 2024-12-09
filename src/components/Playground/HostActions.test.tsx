@@ -12,6 +12,7 @@ test('should change round ID', () => {
       onChangeRoundId={mockOnChangeRoundId}
       scoreAdditionMode="add"
       roundId="1"
+      getRoundsFn={() => Promise.resolve([])}
     />,
   )
 
