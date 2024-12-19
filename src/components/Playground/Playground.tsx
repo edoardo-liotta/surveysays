@@ -320,6 +320,11 @@ class Playground extends Component<PlaygroundProps, PlaygroundState> {
               }}
               onChangeRoundId={this.updateRoundId}
               getRoundsFn={this.serviceApi.getRounds}
+              playerNames={players.map(x => x.name)}
+              onResetPlayerNames={newPlayerNames => {
+                this.serviceApi.resetPlayerNames(newPlayerNames)
+                this.updateRoundId(roundId)
+              }}
             />
           )}
         </Fragment>

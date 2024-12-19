@@ -13,6 +13,8 @@ test('should change round ID', () => {
       scoreAdditionMode="add"
       roundId="1"
       getRoundsFn={() => Promise.resolve([])}
+      playerNames={['Player 1', 'Player 2']}
+      onResetPlayerNames={() => Promise.resolve()}
     />,
   )
 

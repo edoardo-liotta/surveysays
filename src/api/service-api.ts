@@ -159,6 +159,25 @@ class ServiceApi {
       .then(thenCallback)
       .catch(catchCallback)
   }
+
+  resetPlayerNames(
+    newPlayerNames: string[],
+    thenCallback?:
+      | ((value: Response) => Response | PromiseLike<Response>)
+      | null,
+    catchCallback?: ((reason: any) => PromiseLike<never>) | null,
+  ) {
+    fetch(`${getServiceUrl()}/reset-player-names`, {
+      method: 'POST',
+      body: JSON.stringify(newPlayerNames),
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'any',
+      },
+    })
+      .then(thenCallback)
+      .catch(catchCallback)
+  }
 }
 
 export const setScoreAdditionMode = (

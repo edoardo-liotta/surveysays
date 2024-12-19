@@ -16,7 +16,7 @@ import {
   TextField,
   Toolbar,
 } from '@mui/material'
-import { Add, Cancel, Edit, SwipeVertical } from '@mui/icons-material'
+import { Add, Cancel, Edit, People, SwipeVertical } from '@mui/icons-material'
 import React, { useState } from 'react'
 import { ScoreAdditionMode } from '../../update-score-fn/score-addition-mode'
 import { RoundList } from '../RoundList/RoundList'
@@ -29,6 +29,8 @@ type HostActionsProps = {
   scoreAdditionMode: ScoreAdditionMode
   roundId: string
   getRoundsFn: () => Promise<RoundInfo[]>
+  playerNames: string[]
+  onResetPlayerNames: (newPlayerNames: string[]) => void
 }
 
 const HostActions = ({
@@ -38,17 +40,20 @@ const HostActions = ({
   roundId,
   scoreAdditionMode,
   getRoundsFn,
+  playerNames,
+  onResetPlayerNames,
 }: HostActionsProps) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [roundListDrawerOpen, setRoundListDrawerOpen] = useState(false)
-  const [newRoundId, setNewRoundId] = useState(roundId)
+  const [newPlayer1Name, setNewPlayer1Name] = useState(playerNames[0])
+  const [newPlayer2Name, setNewPlayer2Name] = useState(playerNames[1])
 
   const handleEditDialogOpen = () => setEditDialogOpen(true)
   const handleEditDialogClose = () => setEditDialogOpen(false)
-  const handleRoundIdChange = () => {
+  const handleResetPlayerNames = () => {
     setRoundListDrawerOpen(false)
-    onChangeRoundId(newRoundId)
-    handleEditDialogClose()
+    setEditDialogOpen(false)
+    onResetPlayerNames([newPlayer1Name, newPlayer2Name])
   }
 
   const toggleDrawer = () => setRoundListDrawerOpen(!roundListDrawerOpen)
@@ -72,6 +77,9 @@ const HostActions = ({
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 2 }} />
+          <IconButton color="inherit" onClick={handleEditDialogOpen}>
+            <People color={'inherit'} />
+          </IconButton>
           <Card sx={{ minWidth: '80px' }}>
             <CardActionArea sx={{ padding: '0' }} onClick={toggleDrawer}>
               <CardContent>
@@ -82,22 +90,32 @@ const HostActions = ({
         </Toolbar>
       </AppBar>
       <Dialog open={editDialogOpen} onClose={handleEditDialogClose}>
-        <DialogTitle>Cambia round</DialogTitle>
+        <DialogTitle>Cambia nomi dei giocatori</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
-            id="edit-roundId"
-            label="Round ID"
+            id="edit-player-names-1"
+            label="Left team"
             type="text"
             fullWidth
             variant="standard"
-            value={newRoundId}
-            onChange={e => setNewRoundId(e.target.value)}
+            value={newPlayer1Name}
+            onChange={e => setNewPlayer1Name(e.target.value)}
+          />
+          <TextField
+            autoFocus
+            id="edit-player-names-2"
+            label="Right team"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={newPlayer2Name}
+            onChange={e => setNewPlayer2Name(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditDialogClose}>Annulla</Button>
-          <Button onClick={handleRoundIdChange}>Conferma</Button>
+          <Button onClick={handleResetPlayerNames}>Conferma</Button>
         </DialogActions>
       </Dialog>
       <Drawer
